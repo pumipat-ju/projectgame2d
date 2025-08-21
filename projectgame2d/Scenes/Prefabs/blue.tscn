@@ -41,9 +41,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n4sts"]
-radius = 16.6667
-height = 58.6667
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_45364"]
+radius = 17.3333
+height = 64.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tvbjh"]
 size = Vector2(58, 88.5)
@@ -80,11 +80,11 @@ editor_draw_drag_margin = true
 position = Vector2(2, 3)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_45364")
-animation = &"Walk"
+animation = &"Jump"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(1.5, 1.5)
-shape = SubResource("CapsuleShape2D_n4sts")
+shape = SubResource("CapsuleShape2D_45364")
 
 [node name="Collision" type="Area2D" parent="."]
 position = Vector2(-4, -3)

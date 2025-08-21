@@ -42,8 +42,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n4sts"]
-radius = 16.6667
-height = 58.6667
+radius = 24.0
+height = 82.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tvbjh"]
 size = Vector2(58, 88.5)
@@ -78,7 +78,7 @@ editor_draw_drag_margin = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_4nss6")
-animation = &"Walk"
+animation = &"Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, -3)
