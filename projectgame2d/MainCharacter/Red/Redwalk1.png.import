@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7h1nff7nfxvt"
-path="res://.godot/imported/Red.png-d6cd24df452819ebff41533288329adf.ctex"
+uid="uid://qrdjfxsj1rys"
+path="res://.godot/imported/Redwalk1.png-3b2e21968b68d692ef88d7d02cab85e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MainCharacter/Red.png"
-dest_files=["res://.godot/imported/Red.png-d6cd24df452819ebff41533288329adf.ctex"]
+source_file="res://MainCharacter/Red/Redwalk1.png"
+dest_files=["res://.godot/imported/Redwalk1.png-3b2e21968b68d692ef88d7d02cab85e3.ctex"]
 
 [params]
 
