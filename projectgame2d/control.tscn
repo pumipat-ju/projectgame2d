@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://xj4wci61ikjw"]
+
+[ext_resource type="Texture2D" uid="uid://b10fsskdsfwub" path="res://MainCharacter/Red/RedIdle1.png" id="1_62e2m"]
+[ext_resource type="Script" uid="uid://dysjtwrj7ofvh" path="res://Scripts/control.gd" id="1_qtu10"]
+[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Scenes/Prefabs/Red.tscn" id="2_kbped"]
+[ext_resource type="Texture2D" uid="uid://djkify63ix3vx" path="res://MainCharacter/Blue/BlueIdle1.png" id="2_qtu10"]
+[ext_resource type="PackedScene" uid="uid://btc8hreb8gbl7" path="res://Scenes/Prefabs/blue.tscn" id="3_fj5cn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qtu10"]
+font_size = 50
+
+[node name="CharacterSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1150.0
+offset_bottom = 654.0
+script = ExtResource("1_qtu10")
+red_scene = ExtResource("2_kbped")
+blue_scene = ExtResource("3_fj5cn")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 1147.0
+offset_bottom = 645.0
+text = "Choose Your Character"
+label_settings = SubResource("LabelSettings_qtu10")
+horizontal_alignment = 1
+
+[node name="Red" type="Button" parent="."]
+layout_mode = 0
+offset_left = 212.0
+offset_top = 126.0
+offset_right = 523.0
+offset_bottom = 483.0
+icon = ExtResource("1_62e2m")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Blue" type="Button" parent="."]
+layout_mode = 0
+offset_left = 642.0
+offset_top = 129.0
+offset_right = 943.0
+offset_bottom = 480.0
+icon = ExtResource("2_qtu10")
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="Red" to="." method="_on_red_pressed"]
+[connection signal="pressed" from="Blue" to="." method="_on_blue_pressed"]

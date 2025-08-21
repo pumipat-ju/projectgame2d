@@ -1,21 +1,21 @@
-[gd_scene load_steps=13 format=3 uid="uid://w7m6tehvvy3g"]
+[gd_scene load_steps=13 format=3 uid="uid://btc8hreb8gbl7"]
 
-[ext_resource type="Script" uid="uid://bwb4bg70o281y" path="res://Scripts/Red.gd" id="1_qt7d6"]
-[ext_resource type="Texture2D" uid="uid://b10fsskdsfwub" path="res://MainCharacter/Red/RedIdle1.png" id="2_ak25i"]
-[ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="3_8vxmb"]
-[ext_resource type="Texture2D" uid="uid://h3j5w0uff0qx" path="res://MainCharacter/Red/RedIdle2.png" id="3_fdt7q"]
-[ext_resource type="Texture2D" uid="uid://cqpajeev7k1rx" path="res://MainCharacter/Red/RedJump.png" id="4_k7ict"]
-[ext_resource type="Texture2D" uid="uid://qrdjfxsj1rys" path="res://MainCharacter/Red/Redwalk1.png" id="5_68wta"]
-[ext_resource type="Texture2D" uid="uid://crwoar3qcr5gg" path="res://MainCharacter/Red/Redwalk2.png" id="6_b8ttq"]
+[ext_resource type="Script" uid="uid://d07pcg18uqpi" path="res://Scripts/blue.gd" id="1_45364"]
+[ext_resource type="Texture2D" uid="uid://djkify63ix3vx" path="res://MainCharacter/Blue/BlueIdle1.png" id="2_frhon"]
+[ext_resource type="Texture2D" uid="uid://chuygj7k3vjhd" path="res://MainCharacter/Blue/BlueIdle2.png" id="3_ux6vc"]
+[ext_resource type="Texture2D" uid="uid://cia5oirmlpavw" path="res://MainCharacter/Blue/BlueJump.png" id="4_7usv3"]
+[ext_resource type="Texture2D" uid="uid://krralgmgfjii" path="res://MainCharacter/Blue/BlueWalk1.png" id="5_kays5"]
+[ext_resource type="Texture2D" uid="uid://c2vllm6yriade" path="res://MainCharacter/Blue/BlueWalk2.png" id="6_wptl4"]
+[ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="7_m4axd"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_4nss6"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_45364"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_ak25i")
+"texture": ExtResource("2_frhon")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_fdt7q")
+"texture": ExtResource("3_ux6vc")
 }],
 "loop": true,
 "name": &"Idle",
@@ -23,7 +23,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_k7ict")
+"texture": ExtResource("4_7usv3")
 }],
 "loop": true,
 "name": &"Jump",
@@ -31,10 +31,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_68wta")
+"texture": ExtResource("5_kays5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_b8ttq")
+"texture": ExtResource("6_wptl4")
 }],
 "loop": true,
 "name": &"Walk",
@@ -56,12 +56,13 @@ point_count = 3
 offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
-[node name="Red" type="CharacterBody2D" groups=["Player"]]
-script = ExtResource("1_qt7d6")
+[node name="Blue" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_45364")
 double_jump = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(16, 36)
+physics_interpolation_mode = 2
+position = Vector2(-1, 15)
 limit_left = 0
 limit_bottom = 705
 limit_smoothed = true
@@ -76,26 +77,27 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, 3)
 scale = Vector2(1.5, 1.5)
-sprite_frames = SubResource("SpriteFrames_4nss6")
+sprite_frames = SubResource("SpriteFrames_45364")
 animation = &"Walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4, -3)
+scale = Vector2(1.5, 1.5)
 shape = SubResource("CapsuleShape2D_n4sts")
 
 [node name="Collision" type="Area2D" parent="."]
-gravity = 0.0
+position = Vector2(-4, -3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
-position = Vector2(-2, -2.25)
+position = Vector2(3, 7)
 shape = SubResource("RectangleShape2D_tvbjh")
 
 [node name="ParticleTrails" type="CPUParticles2D" parent="."]
-position = Vector2(0, 42)
+physics_interpolation_mode = 0
 emitting = false
 amount = 20
-texture = ExtResource("3_8vxmb")
+texture = ExtResource("7_m4axd")
 lifetime = 0.4
 speed_scale = 0.8
 emission_shape = 1
@@ -110,22 +112,20 @@ scale_amount_curve = SubResource("Curve_m2jh0")
 color_ramp = SubResource("Gradient_3gc37")
 
 [node name="DeathParticles" type="CPUParticles2D" parent="."]
-position = Vector2(-1, 15)
+position = Vector2(0, 42)
 emitting = false
 amount = 20
-lifetime = 0.6
-one_shot = true
-speed_scale = 1.2
-explosiveness = 1.0
-lifetime_randomness = 0.4
-emission_shape = 2
-emission_sphere_radius = 50.0
+texture = ExtResource("7_m4axd")
+lifetime = 0.4
+speed_scale = 0.8
+emission_shape = 1
+emission_sphere_radius = 5.0
 direction = Vector2(0, 0)
 gravity = Vector2(0, 0)
 damping_min = 1.0
 damping_max = 1.0
-scale_amount_min = 15.0
-scale_amount_max = 30.0
+scale_amount_min = 0.2
+scale_amount_max = 0.6
 scale_amount_curve = SubResource("Curve_m2jh0")
 color_ramp = SubResource("Gradient_3gc37")
 

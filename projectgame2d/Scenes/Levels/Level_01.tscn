@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=3 uid="uid://cjanwm3sy2x37"]
 
+[ext_resource type="Script" uid="uid://be7rive0lixld" path="res://Scenes/Levels/level_01.gd" id="1_5vjlm"]
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_oqkjg"]
 [ext_resource type="PackedScene" uid="uid://bjb3dx2x4bocm" path="res://Scenes/Levels/Level_02.tscn" id="2_0ac5u"]
-[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Scenes/Prefabs/Red.tscn" id="2_pay8t"]
 [ext_resource type="PackedScene" uid="uid://bfmh3fm2de78o" path="res://Scenes/Prefabs/Coin.tscn" id="3_rrh80"]
 [ext_resource type="Script" uid="uid://cb1as4sjmni7s" path="res://Scripts/GameManager.gd" id="4_vgfkr"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://Assets/Spritesheet/platformPack_tilesheet.png" id="5_wqbaa"]
@@ -45,30 +45,12 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_rndpx")
 
 [node name="Level_01" type="Node2D"]
+script = ExtResource("1_5vjlm")
 
 [node name="LevelFinishDoor" parent="." instance=ExtResource("1_oqkjg")]
 z_index = 1
 position = Vector2(6839, 333)
 next_scene = ExtResource("2_0ac5u")
-
-[node name="Player" parent="." instance=ExtResource("2_pay8t")]
-z_index = 1
-position = Vector2(150, 318)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(16, 36)
-limit_left = 0
-limit_bottom = 705
-limit_smoothed = true
-position_smoothing_enabled = true
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_left_margin = 0.4
-drag_top_margin = 0.4
-drag_right_margin = 0.4
-drag_bottom_margin = 0.4
-editor_draw_limits = true
-editor_draw_drag_margin = true
 
 [node name="Coins" type="Node2D" parent="."]
 
