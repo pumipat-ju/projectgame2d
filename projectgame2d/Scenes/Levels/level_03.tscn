@@ -71,7 +71,7 @@ script = ExtResource("1_ifgmf")
 [node name="LevelFinishDoor" parent="." instance=ExtResource("1_hq1kd")]
 z_index = 1
 position = Vector2(6320, 322)
-next_scene = ExtResource("3_ifgmf")
+next_scene = null
 
 [node name="Coins" type="Node2D" parent="."]
 
