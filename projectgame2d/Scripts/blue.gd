@@ -3,7 +3,7 @@ extends CharacterBody2D
 # --------- VARIABLES ----------
 @export_category("Player Properties")
 @export var move_speed : float = 400
-@export var jump_force : float = 700
+@export var jump_force : float = 1000
 @export var gravity : float = 15
 @export var max_jump_count : int = 2
 var jump_count : int = 2
