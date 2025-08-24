@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://djjtao8mds0g1"]
+[gd_scene load_steps=18 format=4 uid="uid://djjtao8mds0g1"]
 
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_hq1kd"]
 [ext_resource type="Script" uid="uid://dnd8yydid7cqi" path="res://Scenes/Levels/level_03.gd" id="1_ifgmf"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cb1as4sjmni7s" path="res://Scripts/GameManager.gd" id="8_8tkhk"]
 [ext_resource type="Script" uid="uid://di23naiwtfni3" path="res://Scripts/GameUI.gd" id="9_4kuxc"]
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="10_2fied"]
+[ext_resource type="Texture2D" uid="uid://btr5nvhhmmssf" path="res://Background/stage3.png" id="11_ifgmf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i4385"]
 texture = ExtResource("4_34g67")
@@ -169,3 +170,45 @@ theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("7_0yyqy")
 theme_override_font_sizes/font_size = 32
 text = "x 3"
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.31802, 0.31802, 0.31802, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+position = Vector2(1015.58, 179.5)
+scale = Vector2(1.59505, 1.59505)
+texture = ExtResource("11_ifgmf")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.317647, 0.317647, 0.317647, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+modulate = Color(0.796078, 0.796078, 0.796078, 1)
+position = Vector2(3260.58, 179.5)
+scale = Vector2(1.59505, 1.59505)
+texture = ExtResource("11_ifgmf")
+flip_h = true
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.317647, 0.317647, 0.317647, 1)
+position = Vector2(300, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+modulate = Color(0.796078, 0.796078, 0.796078, 1)
+position = Vector2(7450.5, 180)
+scale = Vector2(1.59375, 1.59375)
+texture = ExtResource("11_ifgmf")
+flip_h = true
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.317647, 0.317647, 0.317647, 1)
+position = Vector2(3482, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+position = Vector2(2023.75, 179.5)
+scale = Vector2(1.59505, 1.59505)
+texture = ExtResource("11_ifgmf")

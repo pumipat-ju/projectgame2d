@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://t667m8yuuj4y" path="res://Assets/Tile/texture (10).png" id="7_5pmb1"]
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="7_j7jun"]
 [ext_resource type="FontFile" uid="uid://qgc4vi5osk7v" path="res://Assets/Fonts/Star Choco.ttf" id="8_gwcy2"]
-[ext_resource type="Texture2D" uid="uid://dvpnm288ce1fp" path="res://Background/1.png" id="10_5vjlm"]
+[ext_resource type="Texture2D" uid="uid://dvpnm288ce1fp" path="res://Background/stage1.png" id="10_5vjlm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aksfc"]
 texture = ExtResource("5_wqbaa")
