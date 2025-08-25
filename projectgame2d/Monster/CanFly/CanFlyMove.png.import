@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjskap0et54yq"
-path="res://.godot/imported/Bin2.png-94a74ebf85ccf15d7de88da871d02393.ctex"
+uid="uid://cdgfn6i2aqtr1"
+path="res://.godot/imported/CanFlyMove.png-0367c9378f4b8988bb825e87b61d9512.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Monster/Bin/Bin2.png"
-dest_files=["res://.godot/imported/Bin2.png-94a74ebf85ccf15d7de88da871d02393.ctex"]
+source_file="res://Monster/CanFly/CanFlyMove.png"
+dest_files=["res://.godot/imported/CanFlyMove.png-0367c9378f4b8988bb825e87b61d9512.ctex"]
 
 [params]
 

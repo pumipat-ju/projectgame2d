@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2w4oylac23fp"
-path="res://.godot/imported/BossTruck1.png-bc990ff35fe1bd2440d7e40f492541a7.ctex"
+uid="uid://cmhtq0cf3j0ng"
+path="res://.godot/imported/CanFlyIdle2.png-65c770e9fae365dcb5a97566b154e7d7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Monster/BossTruck/BossTruck1.png"
-dest_files=["res://.godot/imported/BossTruck1.png-bc990ff35fe1bd2440d7e40f492541a7.ctex"]
+source_file="res://Monster/CanFly/CanFlyIdle2.png"
+dest_files=["res://.godot/imported/CanFlyIdle2.png-65c770e9fae365dcb5a97566b154e7d7.ctex"]
 
 [params]
 
