@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://cjanwm3sy2x37"]
+[gd_scene load_steps=22 format=4 uid="uid://cjanwm3sy2x37"]
 
 [ext_resource type="Script" uid="uid://be7rive0lixld" path="res://Scenes/Levels/level_01.gd" id="1_5vjlm"]
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_oqkjg"]
@@ -12,6 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="7_j7jun"]
 [ext_resource type="FontFile" uid="uid://qgc4vi5osk7v" path="res://Assets/Fonts/Star Choco.ttf" id="8_gwcy2"]
 [ext_resource type="Texture2D" uid="uid://dvpnm288ce1fp" path="res://Background/stage1.png" id="10_5vjlm"]
+[ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="13_5pmb1"]
+[ext_resource type="PackedScene" uid="uid://dqr8tccqpl2xj" path="res://Monster/BossTruck/boss_truck.tscn" id="14_xpj05"]
+[ext_resource type="PackedScene" uid="uid://hk8ilvwk37rn" path="res://Monster/CanFly/can_fly.tscn" id="15_i7ntp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aksfc"]
 texture = ExtResource("5_wqbaa")
@@ -221,3 +224,38 @@ modulate = Color(0.796243, 0.796243, 0.796243, 1)
 position = Vector2(2023.75, 179.5)
 scale = Vector2(1.59505, 1.59505)
 texture = ExtResource("10_5vjlm")
+
+[node name="Bin" parent="." instance=ExtResource("13_5pmb1")]
+position = Vector2(2732, 388)
+scale = Vector2(1.5, 1.5)
+
+[node name="BossTruck" parent="." instance=ExtResource("14_xpj05")]
+position = Vector2(3265, 82)
+scale = Vector2(3, 3)
+
+[node name="PatroPoints" type="Node2D" parent="."]
+
+[node name="PointA" type="Marker2D" parent="PatroPoints"]
+position = Vector2(2506, 438)
+gizmo_extents = 0.0
+
+[node name="PointB" type="Marker2D" parent="PatroPoints"]
+position = Vector2(2883, 434)
+
+[node name="PointA2" type="Marker2D" parent="PatroPoints"]
+position = Vector2(3079, 165)
+gizmo_extents = 0.0
+
+[node name="PointA3" type="Marker2D" parent="PatroPoints"]
+position = Vector2(3433, 168)
+gizmo_extents = 0.0
+
+[node name="PointB2" type="Marker2D" parent="PatroPoints"]
+position = Vector2(4847, 251)
+
+[node name="PointB3" type="Marker2D" parent="PatroPoints"]
+position = Vector2(5435, 214)
+
+[node name="CanFly" parent="." instance=ExtResource("15_i7ntp")]
+position = Vector2(5174, 242)
+scale = Vector2(1.5, 1.5)

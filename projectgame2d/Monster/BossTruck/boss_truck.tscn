@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://dqr8tccqpl2xj"]
+
+[ext_resource type="Texture2D" uid="uid://dgrsebtgsluic" path="res://Monster/BossTruck/BossTruckIdle.png" id="1_iaifw"]
+[ext_resource type="Script" uid="uid://dobk4hfyk2epr" path="res://Monster/BossTruck/boss_truck.gd" id="1_sgc1r"]
+[ext_resource type="Texture2D" uid="uid://vg1w8npw1bbm" path="res://Monster/BossTruck/BossTruckWalk1.png" id="2_sgc1r"]
+[ext_resource type="Texture2D" uid="uid://7djp1ojptvu3" path="res://Monster/BossTruck/BossTruckWalk2.png" id="3_olj7g"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wvgmv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_iaifw")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sgc1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_olj7g")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_iaifw"]
+radius = 31.5
+height = 81.9511
+
+[node name="BossTruck" type="CharacterBody2D"]
+script = ExtResource("1_sgc1r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_wvgmv")
+animation = &"Walk"
+frame_progress = 0.73034
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.19209e-07, 4)
+rotation = -1.58868
+shape = SubResource("CapsuleShape2D_iaifw")

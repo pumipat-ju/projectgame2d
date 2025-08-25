@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://ceje3v0obbkuo"]
+
+[ext_resource type="Script" uid="uid://bqpeyg22o6lri" path="res://Monster/Bin/bin.gd" id="1_4f4fv"]
+[ext_resource type="Texture2D" uid="uid://m8hclxe2qdxn" path="res://Monster/Bin/BinIdle1.png" id="1_svatw"]
+[ext_resource type="Texture2D" uid="uid://cbn0pmhu4cfg0" path="res://Monster/Bin/BinIdle2.png" id="2_4f4fv"]
+[ext_resource type="Texture2D" uid="uid://prwvj6wbk2e8" path="res://Monster/Bin/BinWalk1.png" id="3_6wqoh"]
+[ext_resource type="Texture2D" uid="uid://6k56l5w6a3ko" path="res://Monster/Bin/BinWalk2.png" id="4_ssfj7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_edifd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_svatw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4f4fv")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_6wqoh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ssfj7")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l10n7"]
+radius = 27.0
+height = 84.0
+
+[node name="Bin" type="CharacterBody2D"]
+script = ExtResource("1_4f4fv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_edifd")
+animation = &"Walk"
+frame_progress = 0.795128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_l10n7")
