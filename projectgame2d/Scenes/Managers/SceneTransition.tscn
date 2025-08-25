@@ -143,5 +143,5 @@ color = Color(0, 0, 0, 1)
 
 [node name="SceneTransitionAnim" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_7j1ja")
+&"": SubResource("AnimationLibrary_7j1ja")
 }
