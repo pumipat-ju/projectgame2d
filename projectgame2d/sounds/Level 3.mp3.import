@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmx200dptd2w"
+path="res://.godot/imported/Level 3.mp3-3359032bf6feb8b5ee22c977ec0c3ff6.mp3str"
+
+[deps]
+
+source_file="res://sounds/Level 3.mp3"
+dest_files=["res://.godot/imported/Level 3.mp3-3359032bf6feb8b5ee22c977ec0c3ff6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
