@@ -13,15 +13,21 @@ var jump_count : int = 2
 
 var is_grounded : bool = false
 
+# --------- HEALTH SYSTEM ----------
+@export var max_health : int = 100
+var health : int = max_health
+var is_dead: bool = false
+
 @onready var player_sprite = $AnimatedSprite2D
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
 
 # --------- BUILT-IN FUNCTIONS ----------
 func _process(_delta):
-	movement()
-	player_animations()
-	flip_player()
+	if !is_dead:
+		movement()
+		player_animations()
+		flip_player()
 
 # --------- CUSTOM FUNCTIONS ----------
 func movement():
@@ -63,21 +69,43 @@ func player_animations():
 func flip_player():
 	player_sprite.flip_h = velocity.x < 0
 
+# --------- HEALTH FUNCTIONS ----------
+func take_damage(amount: int):
+	if is_dead:
+		return
+	health -= amount
+	print("Player HP:", health)
+	
+	if health <= 0:
+		die()
+
+func die():
+	is_dead = true
+	AudioManager.death_sfx.play()
+	death_particles.emitting = true
+	
+	if get_parent().has_node("SpawnPoint"):
+		death_tween(get_parent().get_node("SpawnPoint").global_position)
+	else:
+		death_tween(Vector2.ZERO)
+	
+	# reset health หลัง respawn
+	health = max_health
+	is_dead = false
+
 # --------- TWEEN ANIMATIONS ----------
 func death_tween(spawn_position: Vector2):
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
 	await tween.finished
 	
-	global_position = spawn_position # ใช้ตำแหน่ง spawn ที่ส่งมาจาก Level_01
-	
+	global_position = spawn_position
 	await get_tree().create_timer(0.3).timeout
 	AudioManager.respawn_sfx.play()
 	respawn_tween()
 
 func respawn_tween():
 	var tween = create_tween()
-	tween.stop(); tween.play()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.15)
 
 func jump_tween():
@@ -88,10 +116,4 @@ func jump_tween():
 # --------- SIGNALS ----------
 func _on_collision_body_entered(_body):
 	if _body.is_in_group("Traps"):
-		AudioManager.death_sfx.play()
-		death_particles.emitting = true
-		# ส่ง spawn_point จาก Level_01 มาที่ death_tween()
-		if get_parent().has_node("SpawnPoint"):
-			death_tween(get_parent().get_node("SpawnPoint").global_position)
-		else:
-			death_tween(Vector2.ZERO)
+		take_damage(9999) # ตายทันทีเมื่อโดน Trap

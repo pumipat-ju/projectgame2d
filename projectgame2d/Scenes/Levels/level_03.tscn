@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=4 uid="uid://djjtao8mds0g1"]
+[gd_scene load_steps=21 format=4 uid="uid://dcdjjslvdj0o6"]
 
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_hq1kd"]
 [ext_resource type="Script" uid="uid://dnd8yydid7cqi" path="res://Scenes/Levels/level_03.gd" id="1_ifgmf"]
+[ext_resource type="PackedScene" uid="uid://pul64j1s6did" path="res://Scenes/Levels/level_04.tscn" id="3_aitf4"]
 [ext_resource type="PackedScene" uid="uid://bfmh3fm2de78o" path="res://Scenes/Prefabs/Coin.tscn" id="3_uak2l"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://Assets/Spritesheet/platformPack_tilesheet.png" id="4_34g67"]
 [ext_resource type="Texture2D" uid="uid://dd3xb2rwjo32o" path="res://Assets/Tile/texture (2).png" id="5_5qict"]
@@ -252,6 +253,7 @@ script = ExtResource("1_ifgmf")
 [node name="LevelFinishDoor" parent="." instance=ExtResource("1_hq1kd")]
 z_index = 1
 position = Vector2(1505, -4026)
+next_scene = ExtResource("3_aitf4")
 
 [node name="Coins" type="Node2D" parent="."]
 visible = false
