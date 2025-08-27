@@ -3,7 +3,10 @@ extends CharacterBody2D
 @export var speed: float = 200
 @export var gravity: float = 800
 @export var damage: int = 20
-@export var damage_cooldown: float = 1.0 # หน่วงเวลา 1 วินาที
+@export var damage_cooldown: float = 1.0
+@export var max_health: int = 50
+@export var flash_duration: float = 0.1  # เวลาแฟลชสีแดง
+var health: int
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -11,6 +14,7 @@ var player: Node2D
 var last_damage_time: float = -1.0
 
 func _ready():
+	health = max_health
 	player = get_tree().get_first_node_in_group("Player")
 	if player == null:
 		print("⚠️ Player not found in group 'Player'!")
@@ -32,7 +36,6 @@ func _physics_process(delta):
 	# ไล่ Player
 	var dir = sign(player.global_position.x - global_position.x)
 	velocity.x = dir * speed
-
 	move_and_slide()
 
 	# Animation
@@ -44,7 +47,7 @@ func _physics_process(delta):
 			anim.play("Idle")
 	anim.flip_h = velocity.x < 0
 
-	# ชน Player ทำ damage + knockback + cooldown
+	# ชน Player
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
 		var target = collision.get_collider()
@@ -55,3 +58,16 @@ func _physics_process(delta):
 				var knockback_vector = Vector2(knockback_dir * 700, -400)
 				target.take_damage(damage, knockback_vector)
 				last_damage_time = current_time
+
+# --------- Enemy Take Damage + Flash ---------
+func take_damage(amount: int):
+	health -= amount
+	print("Enemy HP:", health)
+	flash_red()
+	if health <= 0:
+		queue_free()  # มอนตาย ลบออก
+
+func flash_red():
+	anim.modulate = Color(1, 0, 0)  # สีแดง
+	await get_tree().create_timer(flash_duration).timeout
+	anim.modulate = Color(1, 1, 1)  # สีปกติ

@@ -1,12 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://w7m6tehvvy3g"]
+[gd_scene load_steps=16 format=3 uid="uid://w7m6tehvvy3g"]
 
 [ext_resource type="Script" uid="uid://bwb4bg70o281y" path="res://Scripts/Red.gd" id="1_qt7d6"]
 [ext_resource type="Texture2D" uid="uid://b10fsskdsfwub" path="res://MainCharacter/Red/RedIdle1.png" id="2_ak25i"]
+[ext_resource type="PackedScene" uid="uid://dvufcoyval3w2" path="res://MainCharacter/Red/bullet.tscn" id="2_khrlg"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="3_8vxmb"]
 [ext_resource type="Texture2D" uid="uid://h3j5w0uff0qx" path="res://MainCharacter/Red/RedIdle2.png" id="3_fdt7q"]
 [ext_resource type="Texture2D" uid="uid://cqpajeev7k1rx" path="res://MainCharacter/Red/RedJump.png" id="4_k7ict"]
 [ext_resource type="Texture2D" uid="uid://qrdjfxsj1rys" path="res://MainCharacter/Red/Redwalk1.png" id="5_68wta"]
+[ext_resource type="Texture2D" uid="uid://jcedlkmvbjwm" path="res://MainCharacter/Red/RedShoot1.png" id="5_xadcy"]
 [ext_resource type="Texture2D" uid="uid://crwoar3qcr5gg" path="res://MainCharacter/Red/Redwalk2.png" id="6_b8ttq"]
+[ext_resource type="Texture2D" uid="uid://d2dpyo4qn6isq" path="res://MainCharacter/Red/RedShoot2.png" id="6_khrlg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4nss6"]
 animations = [{
@@ -27,6 +30,17 @@ animations = [{
 }],
 "loop": true,
 "name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_xadcy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_khrlg")
+}],
+"loop": true,
+"name": &"Shoot",
 "speed": 5.0
 }, {
 "frames": [{
@@ -57,8 +71,11 @@ offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [node name="Red" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_qt7d6")
 double_jump = true
+bullet_scene = ExtResource("2_khrlg")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(16, 36)
@@ -78,7 +95,8 @@ editor_draw_drag_margin = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_4nss6")
-animation = &"Idle"
+animation = &"Shoot"
+frame_progress = 0.709125
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, -3)

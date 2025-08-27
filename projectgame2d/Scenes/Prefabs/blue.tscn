@@ -57,6 +57,8 @@ offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [node name="Blue" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_45364")
 double_jump = true
 
