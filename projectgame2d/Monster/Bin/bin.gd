@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var speed: float = 200
 @export var gravity: float = 800
 @export var damage: int = 20
-@export var damage_cooldown: float = 1.0 # หน่วงเวลา 1 วินาทีระหว่างดาเมจ
+@export var damage_cooldown: float = 1.0 # หน่วงเวลา 1 วินาที
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -11,13 +11,11 @@ var player: Node2D
 var last_damage_time: float = -1.0
 
 func _ready():
-	# หา Player จากกลุ่ม
 	player = get_tree().get_first_node_in_group("Player")
 	if player == null:
 		print("⚠️ Player not found in group 'Player'!")
 
 func _physics_process(delta):
-	# หา player ใหม่ถ้าไม่เจอ
 	if player == null or not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("Player")
 		if player == null:
@@ -31,8 +29,8 @@ func _physics_process(delta):
 	else:
 		velocity.y = 0
 
-	# ติดตาม Player (แกน X)
-	var dir = sign(player.global_position.x - global_position.x) # -1 ซ้าย, 1 ขวา
+	# ไล่ Player
+	var dir = sign(player.global_position.x - global_position.x)
 	velocity.x = dir * speed
 
 	move_and_slide()
@@ -44,15 +42,16 @@ func _physics_process(delta):
 	else:
 		if anim.animation != "Idle":
 			anim.play("Idle")
-
 	anim.flip_h = velocity.x < 0
 
-	# ชน Player แล้วทำดาเมจแบบ cooldown
+	# ชน Player ทำ damage + knockback + cooldown
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
 		var target = collision.get_collider()
 		if target.is_in_group("Player") and target.has_method("take_damage"):
-			var current_time = Time.get_ticks_msec() / 500.0
+			var current_time = Time.get_ticks_msec() / 1000.0
 			if current_time - last_damage_time > damage_cooldown:
-				target.take_damage(damage)
+				var knockback_dir = sign(target.global_position.x - global_position.x)
+				var knockback_vector = Vector2(knockback_dir * 700, -400)
+				target.take_damage(damage, knockback_vector)
 				last_damage_time = current_time
