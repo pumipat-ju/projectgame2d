@@ -9,7 +9,7 @@ extends CharacterBody2D
 var jump_count : int = 2
 
 @export_category("Toggle Functions")
-@export var double_jump : = false
+@export var double_jump : bool = false
 
 var is_grounded : bool = false
 
@@ -24,10 +24,11 @@ var is_dead: bool = false
 
 # --------- BUILT-IN FUNCTIONS ----------
 func _process(_delta):
-	if !is_dead:
-		movement()
-		player_animations()
-		flip_player()
+	if is_dead:
+		return # หยุด input และ movement ชั่วคราว
+	movement()
+	player_animations()
+	flip_player()
 
 # --------- CUSTOM FUNCTIONS ----------
 func movement():
@@ -60,11 +61,14 @@ func player_animations():
 	if is_on_floor():
 		if abs(velocity.x) > 0:
 			particle_trails.emitting = true
-			player_sprite.play("Walk", 1.5)
+			if player_sprite.animation != "Walk" or not player_sprite.is_playing():
+				player_sprite.play("Walk", 1.5)
 		else:
-			player_sprite.play("Idle")
+			if player_sprite.animation != "Idle" or not player_sprite.is_playing():
+				player_sprite.play("Idle")
 	else:
-		player_sprite.play("Jump")
+		if player_sprite.animation != "Jump" or not player_sprite.is_playing():
+			player_sprite.play("Jump")
 
 func flip_player():
 	player_sprite.flip_h = velocity.x < 0
@@ -80,20 +84,22 @@ func take_damage(amount: int):
 		die()
 
 func die():
+	if is_dead:
+		return
 	is_dead = true
+	
 	AudioManager.death_sfx.play()
 	death_particles.emitting = true
 	
+	# ปิด movement
+	velocity = Vector2.ZERO
+
+	# tween ย่อก่อน respawn
 	if get_parent().has_node("SpawnPoint"):
 		death_tween(get_parent().get_node("SpawnPoint").global_position)
 	else:
 		death_tween(Vector2.ZERO)
-	
-	# reset health หลัง respawn
-	health = max_health
-	is_dead = false
 
-# --------- TWEEN ANIMATIONS ----------
 func death_tween(spawn_position: Vector2):
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
@@ -102,6 +108,11 @@ func death_tween(spawn_position: Vector2):
 	global_position = spawn_position
 	await get_tree().create_timer(0.3).timeout
 	AudioManager.respawn_sfx.play()
+	
+	# รีเซ็ตเลือดและสถานะ
+	health = max_health
+	is_dead = false
+	
 	respawn_tween()
 
 func respawn_tween():

@@ -44,4 +44,18 @@ animation = &"Walk"
 frame_progress = 0.795128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
 shape = SubResource("CapsuleShape2D_l10n7")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="RayCastLeft" type="RayCast2D" parent="Area2D"]
+position = Vector2(-10, 5)
+scale = Vector2(50, 50)
+target_position = Vector2(-1, 0.04)
+
+[node name="RayCastRight" type="RayCast2D" parent="Area2D"]
+position = Vector2(11, 3)
+rotation = -1.90415
+scale = Vector2(50, 50)
+target_position = Vector2(-0.333762, 0.963848)

@@ -11,7 +11,9 @@ func _ready():
 
 	var player = scene_to_spawn.instantiate()
 	add_child(player)
-
+	
+	player.add_to_group("Player")
+	
 	if spawn_point:
 		player.global_position = spawn_point.global_position
 	else:
