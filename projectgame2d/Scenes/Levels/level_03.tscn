@@ -387,4 +387,4 @@ texture = ExtResource("11_ifgmf")
 flip_h = true
 
 [node name="Bin" parent="." instance=ExtResource("14_kqysg")]
-position = Vector2(302, 395)
+position = Vector2(1179, 80)
