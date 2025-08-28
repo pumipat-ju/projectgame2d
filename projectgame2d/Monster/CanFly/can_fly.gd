@@ -1,47 +1,121 @@
 extends CharacterBody2D
 
-@export var speed: float = 300
-@export var gravity: float = 0
+# ----------------- Properties -----------------
+@export var speed: float = 150                # ความเร็วส่ายรอบ spawn
+@export var chase_speed: float = 250         # ความเร็วบินตามแกน X
+@export var detection_range: float = 500     # ระยะเห็นผู้เล่น
+@export var damage: int = 0
+@export var damage_cooldown: float = 1.0
+@export var max_health: int = 30
+@export var flash_duration: float = 0.1
+@export var laser_scene: PackedScene
+@export var laser_cooldown: float = 2.0
+@export var hover_distance_x: float = 50     # ระยะส่ายแกน X รอบ spawn
+@export var hover_distance_y: float = 30     # ระยะส่ายแกน Y รอบ spawn
 
-var left_limit: float
-var right_limit: float
-var direction: int = 1  # 1 = ขวา, -1 = ซ้าย
+# ----------------- Variables -----------------
+var health: int
+var player: Node2D
+var last_damage_time: float = -1.0
+var last_laser_time: float = -1.0
+var spawn_position: Vector2
+var state: String = "idle"
+var target_pos: Vector2
 
+# ----------------- Nodes -----------------
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
+# ----------------- Ready -----------------
 func _ready():
-	# ดึง PatrolPoints จาก Level_01
-	var patrol_node = get_parent().get_node("PatroPoints")
-	# สมมติว่ามี PointA และ PointB
-	var point_a = patrol_node.get_node("PointB2")
-	var point_b = patrol_node.get_node("PointB3")
-	
-	left_limit = point_a.global_position.x
-	right_limit = point_b.global_position.x
+	health = max_health
+	spawn_position = global_position
+	target_pos = spawn_position
+	player = get_tree().get_first_node_in_group("Player")
+	if player == null:
+		print("⚠️ Player not found in group 'Player'!")
 
+# ----------------- Physics Process -----------------
 func _physics_process(delta):
-	# แรงโน้มถ่วง
-	if not is_on_floor():
-		velocity.y += gravity * delta
+	if player == null or not is_instance_valid(player):
+		player = get_tree().get_first_node_in_group("Player")
+		if player == null:
+			return
+
+	# ----------------- ตรวจสอบระยะผู้เล่น -----------------
+	var distance_to_player = global_position.distance_to(player.global_position)
+	if distance_to_player <= detection_range:
+		state = "chase"
 	else:
-		velocity.y = 0
+		state = "idle"
 
-	# เดินซ้ายขวา
-	velocity.x = direction * speed
-	move_and_slide()
+	# ----------------- State Behavior -----------------
+	if state == "idle":
+		_patrol(delta)
+	elif state == "chase":
+		_chase_player(delta)
 
-	# กลับทิศเมื่อถึงขอบ
-	if position.x > right_limit:
-		direction = -1
-	elif position.x < left_limit:
-		direction = 1
-
-	# เล่นแอนิเมชันเดิน
-	if velocity.x != 0 and is_on_floor():
-		if not anim.is_playing():
+	# ----------------- Animation Walk / Idle -----------------
+	var move_vector = target_pos - global_position
+	if move_vector.length() > 1:
+		if anim.animation != "Walk":
 			anim.play("Walk")
 	else:
-		anim.stop()
+		if anim.animation != "Idle":
+			anim.play("Idle")
+	anim.flip_h = move_vector.x < 0
 
-	# พลิกหันซ้ายขวา
-	anim.flip_h = direction < 0
+	# ----------------- ยิงเลเซอร์เฉพาะตอนเห็นผู้เล่น -----------------
+	if state == "chase":
+		var current_time = Time.get_ticks_msec() / 1000.0
+		if current_time - last_laser_time > laser_cooldown:
+			shoot_laser()
+			last_laser_time = current_time
+
+# ----------------- Patrol / ส่ายรอบ spawn -----------------
+func _patrol(_delta):
+	if global_position.distance_to(target_pos) < 2:
+		var offset_x = randf_range(-hover_distance_x, hover_distance_x)
+		var offset_y = randf_range(-hover_distance_y, hover_distance_y)
+		target_pos = spawn_position + Vector2(offset_x, offset_y)
+	var direction = (target_pos - global_position).normalized()
+	var distance = global_position.distance_to(target_pos)
+	var move_amount = min(distance, speed * _delta)
+	global_position += direction * move_amount
+
+# ----------------- Chase / แกน X ตามผู้เล่น -----------------
+func _chase_player(_delta):
+	var desired_x = player.global_position.x
+	target_pos = Vector2(desired_x, global_position.y)  # Y คงเดิม
+	var direction = (target_pos - global_position).normalized()
+	var distance = global_position.distance_to(target_pos)
+	var move_amount = min(distance, chase_speed * _delta)
+	global_position += direction * move_amount
+
+# ----------------- ยิงเลเซอร์ -----------------
+func shoot_laser():
+	if laser_scene == null or player == null:
+		return
+	var laser = laser_scene.instantiate()
+	laser.global_position = global_position
+	laser.aim_at(player.global_position)
+	get_parent().add_child(laser)
+
+# ----------------- โดนโจมตี -----------------
+func take_damage(amount: int):
+	health -= amount
+	print("Enemy HP:", health)
+	flash_red()
+	if health <= 0:
+		queue_free()
+
+func flash_red():
+	anim.modulate = Color(1, 0, 0)
+	await get_tree().create_timer(flash_duration).timeout
+	anim.modulate = Color(1, 1, 1)
+
+# ----------------- รีเซ็ตตำแหน่ง -----------------
+func reset_to_spawn():
+	global_position = spawn_position
+	state = "idle"
+	target_pos = spawn_position
+	anim.play("Idle")

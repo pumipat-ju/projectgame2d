@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwjen46eyx02q"]
+
+[ext_resource type="Script" uid="uid://bvpmg1yrj4dvj" path="res://Monster/CanFly/laser.gd" id="1_k2t5w"]
+[ext_resource type="Texture2D" uid="uid://2lktrxsdfm86" path="res://Monster/CanFly/fireball-vector-animationtype-1-sprite-260nw-476976508-Photoroom.png" id="2_k2t5w"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k2t5w"]
+radius = 11.0
+height = 22.0
+
+[node name="Laser" type="Area2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_k2t5w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(10, -9)
+texture = ExtResource("2_k2t5w")
+flip_h = true
+hframes = 3
+vframes = 6
+frame = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, -4)
+shape = SubResource("CapsuleShape2D_k2t5w")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

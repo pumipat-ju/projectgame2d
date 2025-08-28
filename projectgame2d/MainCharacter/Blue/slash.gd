@@ -7,7 +7,7 @@ var direction: Vector2 = Vector2.RIGHT
 var hit_targets: Array = []  # เก็บศัตรูที่โดนแล้ว
 
 func _ready():
-	await get_tree().create_timer(0.3).timeout  # อยู่แค่ครู่เดียว
+	await get_tree().create_timer(0.1).timeout  # อยู่แค่ครู่เดียว
 	queue_free()
 
 func set_direction(bullet_direction: Vector2):

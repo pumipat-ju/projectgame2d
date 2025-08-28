@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://cjanwm3sy2x37"]
+[gd_scene load_steps=21 format=4 uid="uid://cjanwm3sy2x37"]
 
 [ext_resource type="Script" uid="uid://be7rive0lixld" path="res://Scenes/Levels/level_01.gd" id="1_5vjlm"]
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_oqkjg"]
@@ -13,6 +13,7 @@
 [ext_resource type="FontFile" uid="uid://qgc4vi5osk7v" path="res://Assets/Fonts/Star Choco.ttf" id="8_gwcy2"]
 [ext_resource type="Texture2D" uid="uid://dvpnm288ce1fp" path="res://Background/stage1.png" id="10_5vjlm"]
 [ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="13_5pmb1"]
+[ext_resource type="PackedScene" uid="uid://hk8ilvwk37rn" path="res://Monster/CanFly/can_fly.tscn" id="14_xpj05"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aksfc"]
 texture = ExtResource("5_wqbaa")
@@ -226,3 +227,6 @@ texture = ExtResource("10_5vjlm")
 
 [node name="Bin" parent="." instance=ExtResource("13_5pmb1")]
 position = Vector2(3448, 528)
+
+[node name="CanFly" parent="." instance=ExtResource("14_xpj05")]
+position = Vector2(2640, 98)

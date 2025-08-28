@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://hk8ilvwk37rn"]
+[gd_scene load_steps=8 format=3 uid="uid://hk8ilvwk37rn"]
 
 [ext_resource type="Script" uid="uid://cwmio244tn1o2" path="res://Monster/CanFly/can_fly.gd" id="1_4e3v7"]
 [ext_resource type="Texture2D" uid="uid://dflvf6pfy8q3" path="res://Monster/CanFly/CanFlyIdle1.png" id="1_qtnnc"]
 [ext_resource type="Texture2D" uid="uid://cmhtq0cf3j0ng" path="res://Monster/CanFly/CanFlyIdle2.png" id="2_4e3v7"]
+[ext_resource type="PackedScene" uid="uid://cwjen46eyx02q" path="res://Monster/CanFly/laser.tscn" id="2_bpa87"]
 [ext_resource type="Texture2D" uid="uid://cdgfn6i2aqtr1" path="res://Monster/CanFly/CanFlyMove.png" id="3_bpa87"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ccck3"]
@@ -31,14 +32,16 @@ animations = [{
 radius = 24.0
 height = 66.0
 
-[node name="CanFly" type="CharacterBody2D"]
+[node name="CanFly" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 11
 script = ExtResource("1_4e3v7")
+laser_scene = ExtResource("2_bpa87")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["enemies"]]
 sprite_frames = SubResource("SpriteFrames_ccck3")
 animation = &"Walk"
-flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(11, 1)
+position = Vector2(8, 0)
 shape = SubResource("CapsuleShape2D_dgwrd")

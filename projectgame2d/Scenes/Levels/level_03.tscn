@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://dcdjjslvdj0o6"]
+[gd_scene load_steps=22 format=4 uid="uid://bl8c8qxfe5uvm"]
 
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_hq1kd"]
 [ext_resource type="Script" uid="uid://dnd8yydid7cqi" path="res://Scenes/Levels/level_03.gd" id="1_ifgmf"]
