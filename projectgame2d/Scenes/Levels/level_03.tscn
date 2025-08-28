@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dcdjjslvdj0o6"]
+[gd_scene load_steps=22 format=4 uid="uid://dcdjjslvdj0o6"]
 
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="1_hq1kd"]
 [ext_resource type="Script" uid="uid://dnd8yydid7cqi" path="res://Scenes/Levels/level_03.gd" id="1_ifgmf"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://di23naiwtfni3" path="res://Scripts/GameUI.gd" id="9_4kuxc"]
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="10_2fied"]
 [ext_resource type="Texture2D" uid="uid://ciwlwgmhmtg0e" path="res://Background/stage3.2.png" id="11_ifgmf"]
+[ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="14_kqysg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i4385"]
 texture = ExtResource("4_34g67")
@@ -259,6 +260,7 @@ script = ExtResource("1_ifgmf")
 [node name="LevelFinishDoor" parent="." instance=ExtResource("1_hq1kd")]
 z_index = 1
 position = Vector2(1505, -4026)
+collision_mask = 2
 next_scene = ExtResource("3_aitf4")
 
 [node name="Coins" type="Node2D" parent="."]
@@ -383,3 +385,6 @@ position = Vector2(803, -2906)
 scale = Vector2(1.59505, 1.59505)
 texture = ExtResource("11_ifgmf")
 flip_h = true
+
+[node name="Bin" parent="." instance=ExtResource("14_kqysg")]
+position = Vector2(302, 395)

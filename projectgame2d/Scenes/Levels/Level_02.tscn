@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://bjb3dx2x4bocm"]
+[gd_scene load_steps=18 format=4 uid="uid://bjb3dx2x4bocm"]
 
 [ext_resource type="Script" uid="uid://cmb7vlxsgbh8" path="res://Scenes/Levels/level_02.gd" id="1_20c78"]
 [ext_resource type="PackedScene" uid="uid://bfmh3fm2de78o" path="res://Scenes/Prefabs/Coin.tscn" id="3_nht2m"]
@@ -9,8 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="7_ns8o6"]
 [ext_resource type="FontFile" uid="uid://qgc4vi5osk7v" path="res://Assets/Fonts/Star Choco.ttf" id="8_doswy"]
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="9_enwln"]
-[ext_resource type="PackedScene" uid="uid://dcdjjslvdj0o6" path="res://Scenes/Levels/level_03.tscn" id="10_72l3o"]
+[ext_resource type="PackedScene" uid="uid://dcdjjslvdj0o6" path="res://Scenes/Levels/Level_03.tscn" id="10_72l3o"]
 [ext_resource type="Texture2D" uid="uid://njoq72klowom" path="res://Background/stage2.png" id="11_enwln"]
+[ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="12_enwln"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_enwln"]
 texture = ExtResource("5_8107p")
@@ -310,11 +311,13 @@ script = ExtResource("1_20c78")
 [node name="LevelFinishDoor" parent="." instance=ExtResource("9_enwln")]
 z_index = 1
 position = Vector2(9284, -497)
+collision_mask = 2
 next_scene = ExtResource("10_72l3o")
 
 [node name="LevelFinishDoor2" parent="." instance=ExtResource("9_enwln")]
 z_index = 1
 position = Vector2(9279, 528)
+collision_mask = 2
 next_scene = ExtResource("10_72l3o")
 
 [node name="Coins" type="Node2D" parent="."]
@@ -444,3 +447,12 @@ modulate = Color(0.796078, 0.796078, 0.796078, 1)
 position = Vector2(12005.9, -529.75)
 scale = Vector2(3.44158, 3.44075)
 texture = ExtResource("11_enwln")
+
+[node name="Bin" parent="." instance=ExtResource("12_enwln")]
+position = Vector2(2800, 533)
+
+[node name="Bin2" parent="." instance=ExtResource("12_enwln")]
+position = Vector2(4726, 17)
+
+[node name="Bin3" parent="." instance=ExtResource("12_enwln")]
+position = Vector2(3058, -943)

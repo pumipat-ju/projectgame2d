@@ -13,9 +13,10 @@ var jump_count : int = 2
 var is_grounded : bool = false
 
 # --------- HEALTH SYSTEM ----------
-@export var max_health : int = 100
+@export var max_health : int = 150
 var health : int = max_health
 var is_dead: bool = false
+@export var flash_duration: float = 0.1   # เวลาเป็นสีแดงต่อครั้ง
 
 # --------- KNOCKBACK ----------
 var knockback_velocity = Vector2.ZERO
@@ -27,8 +28,6 @@ var knockback_duration = 0.2
 @export var shoot_cooldown: float = 0.5
 @export var shoot_spawn_offset := Vector2(32, -8)
 var shoot_timer := 0.0
-
-# --------- SHOOT ANIMATION LOCK ----------
 var shoot_lock := false   # ยึดอนิเมชัน Shoot ให้ทับ Walk/Idle/Jump ระหว่างยิง
 
 # --------- NODES ----------
@@ -37,8 +36,9 @@ var shoot_lock := false   # ยึดอนิเมชัน Shoot ให้ท
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
 
+var facing_left = false
+
 func _ready():
-	# กันพลาด: ตั้งค่าเริ่มต้นให้ Shoot ไม่ลูปเอง (เราจะควบคุมด้วยโค้ด)
 	if shoot_sprite.sprite_frames and shoot_sprite.sprite_frames.has_animation("Shoot"):
 		shoot_sprite.sprite_frames.set_animation_loop("Shoot", false)
 
@@ -50,19 +50,17 @@ func _process(delta):
 	# ลดคูลดาวน์ยิง
 	shoot_timer = max(0.0, shoot_timer - delta)
 
-	movement(delta)        # เดิน/กระโดดได้ตามปกติ แม้กำลังกดยิง
-	handle_shooting()      # จัดการยิง + ล็อกอนิเมชัน
-	player_animations()    # เลือกอนิเมชันตาม shoot_lock
+	movement(delta)
+	handle_shooting()
+	player_animations()
 	flip_player()
 
 # --------- MOVEMENT ----------
 func movement(delta):
-	# ----------------- KNOCKBACK -----------------
 	if knockback_timer > 0:
 		velocity = knockback_velocity
 		knockback_timer -= delta
 	else:
-		# ----------------- GRAVITY -----------------
 		if not is_on_floor():
 			velocity.y += gravity
 		else:
@@ -70,7 +68,6 @@ func movement(delta):
 
 		handle_jumping()
 
-		# เดินได้แม้กำลังกดยิง
 		var inputAxis = Input.get_axis("Left", "Right")
 		velocity.x = inputAxis * move_speed
 
@@ -92,9 +89,7 @@ func jump():
 	velocity.y = -jump_force
 
 # --------- ANIMATIONS ----------
-# เลือกอนิเมชันฐาน (Idle/Walk/Jump) ที่เดียวตรงนี้
 func player_animations():
-	# ถ้ากำลังล็อกยิง → คง Shoot ให้ทับอนิเมชันฐาน
 	if shoot_lock:
 		if shoot_sprite.animation != "Shoot":
 			shoot_sprite.play("Shoot")
@@ -119,8 +114,6 @@ func _set_base_animation():
 			player_sprite.play("Jump")
 		player_sprite.speed_scale = 1.0
 
-var facing_left = false
-
 func flip_player():
 	if velocity.x < 0:
 		facing_left = true
@@ -136,20 +129,16 @@ func handle_shooting():
 	var just_pressed := Input.is_action_just_pressed("Shoot")
 	var just_released := Input.is_action_just_released("Shoot")
 
-	# เริ่มกดยิง → ล็อกอนิเมชัน Shoot และตั้งให้วน 1 รอบ/วินาที
 	if just_pressed and !shoot_lock:
 		shoot_lock = true
 		_start_shoot_loop_per_second()
 
-	# ยิงกระสุนตามคูลดาวน์ (รองรับกดค้าง)
 	if pressed and shoot_timer <= 0.0:
 		_fire_bullet()
 		shoot_timer = shoot_cooldown
-		# ย้ำให้อนิเมชันอยู่ที่ Shoot เสมอระหว่างล็อก
 		if shoot_lock and shoot_sprite.animation != "Shoot":
 			shoot_sprite.play("Shoot")
 
-	# ปล่อยปุ่ม → ปลดล็อก, ปิดลูป, รีเซ็ตสปีด และคืนอนิเมชันฐานทันที
 	if just_released and shoot_lock:
 		shoot_lock = false
 		_stop_shoot_loop()
@@ -172,7 +161,6 @@ func _fire_bullet():
 	if Engine.has_singleton("AudioManager"):
 		AudioManager.shoot_sfx.play()
 
-# วนอนิเมชัน Shoot = 1 รอบต่อ 1 วินาที ขณะค้างปุ่ม
 func _start_shoot_loop_per_second():
 	if !shoot_sprite.sprite_frames or !shoot_sprite.sprite_frames.has_animation("Shoot"):
 		return
@@ -180,26 +168,18 @@ func _start_shoot_loop_per_second():
 	var fps := float(shoot_sprite.sprite_frames.get_animation_speed("Shoot"))
 	if fps <= 0.0:
 		fps = 1.0
-	var base_duration := float(frames) / fps  # วินาที/รอบ (ก่อนคูณ speed_scale)
-
-	# ต้องการให้เล่น 1 รอบ = 1 วินาที
-	# duration = base_duration / speed_scale = 1 → speed_scale = base_duration
+	var base_duration := float(frames) / fps
 	shoot_sprite.speed_scale = base_duration
 	shoot_sprite.sprite_frames.set_animation_loop("Shoot", true)
 	shoot_sprite.play("Shoot")
 
-# หยุดโหมดวนเมื่อปล่อยปุ่ม
 func _stop_shoot_loop():
 	if shoot_sprite.sprite_frames and shoot_sprite.sprite_frames.has_animation("Shoot"):
 		shoot_sprite.sprite_frames.set_animation_loop("Shoot", false)
 	shoot_sprite.speed_scale = 1.0
 	shoot_sprite.stop()
 
-# --- Callback animation ---
-# (ต่อสัญญาณ animation_finished ของ AnimatedSprite2D ที่เล่น "Shoot" มายังฟังก์ชันนี้)
 func _on_shoot_sprite_animation_finished():
-	# ถ้ายังค้างปุ่มอยู่ เราเปิด loop ไว้แล้ว มันจะเล่นต่อเอง
-	# ถ้าไม่ได้ค้าง → รีเซ็ตและคืนอนิเมชันฐาน
 	if !Input.is_action_pressed("Shoot"):
 		if shoot_lock:
 			shoot_lock = false
@@ -213,12 +193,26 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO):
 	health -= amount
 	print("Player HP:", health)
 
+	flash_red()
+
 	if knockback != Vector2.ZERO:
 		knockback_velocity = knockback
 		knockback_timer = knockback_duration
 
 	if health <= 0:
 		die()
+
+func flash_red():
+	player_sprite.modulate = Color(1, 0, 0)
+	if shoot_sprite != player_sprite:
+		shoot_sprite.modulate = Color(1, 0, 0)
+
+	var timer = get_tree().create_timer(flash_duration)
+	await timer.timeout
+
+	player_sprite.modulate = Color(1, 1, 1)
+	if shoot_sprite != player_sprite:
+		shoot_sprite.modulate = Color(1, 1, 1)
 
 func die():
 	if is_dead:

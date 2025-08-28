@@ -75,6 +75,7 @@ script = ExtResource("1_5vjlm")
 [node name="LevelFinishDoor" parent="." instance=ExtResource("1_oqkjg")]
 z_index = 1
 position = Vector2(6320, 322)
+collision_mask = 2
 next_scene = ExtResource("2_0ac5u")
 
 [node name="Coins" type="Node2D" parent="."]
@@ -223,5 +224,5 @@ position = Vector2(2023.75, 179.5)
 scale = Vector2(1.59505, 1.59505)
 texture = ExtResource("10_5vjlm")
 
-[node name="Bin" parent="." groups=["enemies"] instance=ExtResource("13_5pmb1")]
+[node name="Bin" parent="." instance=ExtResource("13_5pmb1")]
 position = Vector2(3448, 528)

@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
-@export var speed: float = 200
+@export var speed: float = 250
 @export var gravity: float = 800
+@export var jump_force: float = 500  # แรงกระโดด
 @export var damage: int = 20
 @export var damage_cooldown: float = 1.0
 @export var max_health: int = 50
@@ -9,12 +10,16 @@ extends CharacterBody2D
 var health: int
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var ray_left: RayCast2D = $RayCastLeft
+@onready var ray_right: RayCast2D = $RayCastRight
 
 var player: Node2D
 var last_damage_time: float = -1.0
+var spawn_position: Vector2  # ตำแหน่งเริ่มต้นของมอน
 
 func _ready():
 	health = max_health
+	spawn_position = global_position  # เก็บตำแหน่งเริ่มต้น
 	player = get_tree().get_first_node_in_group("Player")
 	if player == null:
 		print("⚠️ Player not found in group 'Player'!")
@@ -36,6 +41,12 @@ func _physics_process(delta):
 	# ไล่ Player
 	var dir = sign(player.global_position.x - global_position.x)
 	velocity.x = dir * speed
+
+	# กระโดดถ้า RayCast ชน Ground
+	if is_on_floor():
+		if (dir < 0 and ray_left.is_colliding()) or (dir > 0 and ray_right.is_colliding()):
+			velocity.y = -jump_force
+
 	move_and_slide()
 
 	# Animation
@@ -59,6 +70,10 @@ func _physics_process(delta):
 				target.take_damage(damage, knockback_vector)
 				last_damage_time = current_time
 
+		# เช็ค Traps
+		if target.is_in_group("Traps"):
+			reset_to_spawn()
+
 # --------- Enemy Take Damage + Flash ---------
 func take_damage(amount: int):
 	health -= amount
@@ -71,3 +86,8 @@ func flash_red():
 	anim.modulate = Color(1, 0, 0)  # สีแดง
 	await get_tree().create_timer(flash_duration).timeout
 	anim.modulate = Color(1, 1, 1)  # สีปกติ
+
+func reset_to_spawn():
+	global_position = spawn_position
+	velocity = Vector2.ZERO
+	anim.play("Idle")

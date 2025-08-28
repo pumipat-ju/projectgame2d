@@ -1,11 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://btc8hreb8gbl7"]
+[gd_scene load_steps=16 format=3 uid="uid://btc8hreb8gbl7"]
 
 [ext_resource type="Script" uid="uid://d07pcg18uqpi" path="res://Scripts/blue.gd" id="1_45364"]
 [ext_resource type="Texture2D" uid="uid://djkify63ix3vx" path="res://MainCharacter/Blue/BlueIdle1.png" id="2_frhon"]
+[ext_resource type="PackedScene" uid="uid://ccs8s5et2k4kk" path="res://MainCharacter/Blue/slash.tscn" id="2_yjixy"]
 [ext_resource type="Texture2D" uid="uid://chuygj7k3vjhd" path="res://MainCharacter/Blue/BlueIdle2.png" id="3_ux6vc"]
 [ext_resource type="Texture2D" uid="uid://cia5oirmlpavw" path="res://MainCharacter/Blue/BlueJump.png" id="4_7usv3"]
 [ext_resource type="Texture2D" uid="uid://krralgmgfjii" path="res://MainCharacter/Blue/BlueWalk1.png" id="5_kays5"]
+[ext_resource type="Texture2D" uid="uid://cxuq564hfslbf" path="res://MainCharacter/Blue/BlueSlash1.png" id="5_pblnn"]
 [ext_resource type="Texture2D" uid="uid://c2vllm6yriade" path="res://MainCharacter/Blue/BlueWalk2.png" id="6_wptl4"]
+[ext_resource type="Texture2D" uid="uid://cvuuwkbd5xo65" path="res://MainCharacter/Blue/BlueSlash2.png" id="6_yjixy"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="7_m4axd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_45364"]
@@ -28,6 +31,17 @@ animations = [{
 "loop": true,
 "name": &"Jump",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_pblnn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_yjixy")
+}],
+"loop": false,
+"name": &"Slash",
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -61,6 +75,7 @@ collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_45364")
 double_jump = true
+slash_scene = ExtResource("2_yjixy")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 physics_interpolation_mode = 2
@@ -82,7 +97,9 @@ editor_draw_drag_margin = true
 position = Vector2(2, 3)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_45364")
-animation = &"Idle"
+animation = &"Slash"
+frame = 1
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 0)
