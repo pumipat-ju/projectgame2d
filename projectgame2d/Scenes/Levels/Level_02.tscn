@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="7_ns8o6"]
 [ext_resource type="FontFile" uid="uid://qgc4vi5osk7v" path="res://Assets/Fonts/Star Choco.ttf" id="8_doswy"]
 [ext_resource type="PackedScene" uid="uid://cyti38f0lagf2" path="res://Scenes/Prefabs/LevelFinishDoor.tscn" id="9_enwln"]
-[ext_resource type="PackedScene" uid="uid://bl8c8qxfe5uvm" path="res://Scenes/Levels/level_03.tscn" id="10_72l3o"]
+[ext_resource type="PackedScene" uid="uid://bl8c8qxfe5uvm" path="res://Scenes/Levels/Level_03.tscn" id="10_72l3o"]
 [ext_resource type="Texture2D" uid="uid://njoq72klowom" path="res://Background/stage2.png" id="11_enwln"]
 [ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="12_enwln"]
 
