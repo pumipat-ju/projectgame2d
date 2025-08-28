@@ -70,8 +70,18 @@ func player_animations():
 		if player_sprite.animation != "Jump" or not player_sprite.is_playing():
 			player_sprite.play("Jump")
 
+var facing_left = false
+
 func flip_player():
-	player_sprite.flip_h = velocity.x < 0
+	if velocity.x < 0:
+		facing_left = true
+	elif velocity.x > 0:
+		facing_left = false
+	
+	player_sprite.flip_h = facing_left
+
+#func flip_player():
+	#player_sprite.flip_h = velocity.x < 0
 
 # --------- HEALTH FUNCTIONS ----------
 func take_damage(amount: int):

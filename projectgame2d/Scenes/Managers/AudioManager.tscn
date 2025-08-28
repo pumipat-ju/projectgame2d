@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bssjjygu83iwl"]
+[gd_scene load_steps=2 format=3 uid="uid://bssjjygu83iwl"]
 
 [ext_resource type="Script" uid="uid://dxtvrrxa3w0ry" path="res://Scripts/AudioManager.gd" id="1_hp1cr"]
-[ext_resource type="AudioStream" uid="uid://d3hqx1fr007gy" path="res://Scenes/Managers/พี่ไม่ได้แพ้.mp3" id="2_esrla"]
 
 [node name="AudioManager" type="Node"]
 script = ExtResource("1_hp1cr")
@@ -13,7 +12,6 @@ volume_db = 1.5
 volume_db = 1.5
 
 [node name="DeathSfx" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_esrla")
 
 [node name="RespawnSfx" type="AudioStreamPlayer" parent="."]
 

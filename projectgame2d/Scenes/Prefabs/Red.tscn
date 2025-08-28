@@ -33,7 +33,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 0.5,
 "texture": ExtResource("5_xadcy")
 }, {
 "duration": 1.0,
@@ -41,7 +41,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Shoot",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -96,7 +96,6 @@ editor_draw_drag_margin = true
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_4nss6")
 animation = &"Shoot"
-frame_progress = 0.709125
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, -3)
