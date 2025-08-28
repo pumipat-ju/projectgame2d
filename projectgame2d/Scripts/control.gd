@@ -5,10 +5,10 @@ extends Control
 
 const LEVEL_01_PATH := "res://Scenes/Levels/Level_01.tscn"
 
-func _ready():
-	# ถ้ายังไม่ได้ต่อสัญญาณผ่าน Inspector โค้ดนี้จะเชื่อมให้
-	$"Red".pressed.connect(_on_red_pressed)
-	$"Blue".pressed.connect(_on_blue_pressed)
+#func _ready():
+	## ถ้ายังไม่ได้ต่อสัญญาณผ่าน Inspector โค้ดนี้จะเชื่อมให้
+	#$"Red".pressed.connect(_on_red_pressed)
+	#$"Blue".pressed.connect(_on_blue_pressed)
 
 func _on_red_pressed():
 	_choose_and_go(red_scene)

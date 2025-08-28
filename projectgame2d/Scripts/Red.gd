@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export_category("Player Properties")
 @export var move_speed : float = 400
 @export var jump_force : float = 1000
-@export var gravity : float = 15
+@export var gravity : float = 2800.0   # CHANGED: จาก 15 ต่อเฟรม -> 900 ต่อวินาที^2
 @export var max_jump_count : int = 2
 var jump_count : int = 2
 
@@ -16,7 +16,7 @@ var is_grounded : bool = false
 @export var max_health : int = 150
 var health : int = max_health
 var is_dead: bool = false
-@export var flash_duration: float = 0.1   # เวลาเป็นสีแดงต่อครั้ง
+@export var flash_duration: float = 0.1
 
 # --------- KNOCKBACK ----------
 var knockback_velocity = Vector2.ZERO
@@ -24,7 +24,7 @@ var knockback_timer = 0.0
 var knockback_duration = 0.2
 
 # --------- SHOOTING ----------
-@export var bullet_scene: PackedScene        # ลาก Bullet.tscn ใส่ Inspector
+@export var bullet_scene: PackedScene
 @export var shoot_cooldown: float = 0.5
 @export var shoot_spawn_offset := Vector2(32, -8)
 var shoot_timer := 0.0
@@ -43,17 +43,23 @@ func _ready():
 		shoot_sprite.sprite_frames.set_animation_loop("Shoot", false)
 
 # --------- BUILT-IN FUNCTIONS ----------
-func _process(delta):
+# CHANGED: ย้ายลูปหลักมาอยู่ในฟิสิกส์ลูป
+func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
-	# ลดคูลดาวน์ยิง
+	# ลดคูลดาวน์ยิงในฟิสิกส์ลูป (คงที่ข้ามเครื่อง)
 	shoot_timer = max(0.0, shoot_timer - delta)
 
-	movement(delta)
+	movement(delta)        # เคลื่อนที่/แรงโน้มถ่วงคูณ delta
+	move_and_slide()       # เรียกที่นี่ "ที่เดียว"
+
 	handle_shooting()
 	player_animations()
 	flip_player()
+
+# เดิมใช้ในฟิสิกส์ → ไม่ใช้แล้วเพื่อกันเฟรมเรตเพี้ยน
+func _process(_delta): pass
 
 # --------- MOVEMENT ----------
 func movement(delta):
@@ -62,16 +68,18 @@ func movement(delta):
 		knockback_timer -= delta
 	else:
 		if not is_on_floor():
-			velocity.y += gravity
+			# CHANGED: gravity หน่วย px/s^2 → คูณ delta
+			velocity.y += gravity * delta
 		else:
 			jump_count = max_jump_count
 
 		handle_jumping()
 
 		var inputAxis = Input.get_axis("Left", "Right")
+		# move_speed เป็น "ความเร็ว" px/s ไม่ต้องคูณ delta
 		velocity.x = inputAxis * move_speed
 
-	move_and_slide()
+	# IMPORTANT: ไม่เรียก move_and_slide() ที่นี่แล้ว
 
 func handle_jumping():
 	if Input.is_action_just_pressed("Jump"):
@@ -86,6 +94,7 @@ func jump():
 	jump_tween()
 	if Engine.has_singleton("AudioManager"):
 		AudioManager.jump_sfx.play()
+	# ความเร็วเริ่มต้นของการกระโดด (px/s) → ไม่คูณ delta
 	velocity.y = -jump_force
 
 # --------- ANIMATIONS ----------

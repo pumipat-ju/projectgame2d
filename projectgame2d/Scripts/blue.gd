@@ -1,9 +1,13 @@
 extends CharacterBody2D
 
 # --------- VARIABLES ----------
-@export var move_speed : float = 400
+@export var move_speed : float = 500
 @export var jump_force : float = 1000
-@export var gravity : float = 15
+
+# เดิมคุณใช้ gravity = 15 ต่อ "เฟรม"
+# เทียบเท่าประมาณ 15*60 = 900 ต่อ "วินาที^2" (ถ้า Physics 60 FPS)
+@export var gravity : float = 2800
+
 @export var max_jump_count : int = 2
 var jump_count : int = 2
 
@@ -37,13 +41,21 @@ func _ready():
 	player_sprite.animation_finished.connect(_on_player_sprite_animation_finished)
 	player_sprite.frame_changed.connect(_on_frame_changed)
 
-# --------- PROCESS ----------
-func _process(delta):
-	if is_dead: return
-	movement(delta)
+# --------- PHYSICS LOOP ----------
+func _physics_process(delta: float) -> void:
+	if is_dead:
+		return
+
+	movement(delta)        # <-- เคลื่อนที่/แรงโน้มถ่วงคูณ delta
+	move_and_slide()       # <-- เรียกที่นี่ "ที่เดียว" ในฟิสิกส์ลูป
+
 	handle_slash()
 	player_animations()
 	flip_player()
+
+# --------- (เดิม) PROCESS ----------
+# ไม่ใช้สำหรับฟิสิกส์อีกต่อไป
+func _process(_delta): pass
 
 # --------- MOVEMENT ----------
 func movement(delta):
@@ -52,16 +64,19 @@ func movement(delta):
 		knockback_timer -= delta
 	else:
 		if !is_on_floor():
-			velocity.y += gravity
+			# gravity เป็นหน่วย px/s^2 → ต้องคูณ delta
+			velocity.y += gravity * delta
 		else:
 			jump_count = max_jump_count
 
 		handle_jumping()
 
 		var inputAxis = Input.get_axis("Left","Right")
+		# move_speed คือ "ความเร็ว" px/s ไม่ต้องคูณ delta
 		velocity.x = inputAxis * move_speed
 
-	move_and_slide()
+	# IMPORTANT: ตัด move_and_slide() ออกจากที่นี่
+	# ให้ไปเรียกใน _physics_process() แทน
 
 func handle_jumping():
 	if Input.is_action_just_pressed("Jump"):
@@ -73,6 +88,7 @@ func handle_jumping():
 			jump_count -= 1
 
 func jump():
+	# jump_force เป็น "ความเร็วเริ่มต้น" ของการกระโดด (px/s) → ไม่คูณ delta
 	velocity.y = -jump_force
 
 # --------- ANIMATIONS ----------
@@ -143,7 +159,7 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO):
 	health -= amount
 	print("Player HP:", health)
 
-	flash_red()  # <-- เพิ่มการกะพริบแดง
+	flash_red()
 
 	if knockback != Vector2.ZERO:
 		knockback_velocity = knockback
