@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://xj4wci61ikjw"]
+[gd_scene load_steps=9 format=3 uid="uid://xj4wci61ikjw"]
 
 [ext_resource type="Texture2D" uid="uid://b10fsskdsfwub" path="res://MainCharacter/Red/RedIdle1.png" id="1_62e2m"]
 [ext_resource type="Script" uid="uid://dysjtwrj7ofvh" path="res://Scripts/control.gd" id="1_qtu10"]
 [ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Scenes/Prefabs/Red.tscn" id="2_kbped"]
 [ext_resource type="Texture2D" uid="uid://djkify63ix3vx" path="res://MainCharacter/Blue/BlueIdle1.png" id="2_qtu10"]
 [ext_resource type="PackedScene" uid="uid://btc8hreb8gbl7" path="res://Scenes/Prefabs/blue.tscn" id="3_fj5cn"]
+[ext_resource type="FontFile" uid="uid://c5sicrdsov7kw" path="res://Assets/Fonts/Magero.ttf" id="4_d2fv1"]
+[ext_resource type="Texture2D" uid="uid://c5734ywf807a3" path="res://Background/Choose_Your_Character.png" id="6_ul580"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qtu10"]
 font_size = 50
@@ -20,31 +22,63 @@ blue_scene = ExtResource("3_fj5cn")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
+offset_top = 39.0
 offset_right = 1147.0
-offset_bottom = 645.0
-text = "Choose Your Character"
+offset_bottom = 684.0
+theme_override_fonts/font = ExtResource("4_d2fv1")
+theme_override_font_sizes/font_size = 64
+text = "SELECT"
 label_settings = SubResource("LabelSettings_qtu10")
 horizontal_alignment = 1
 
 [node name="Red" type="Button" parent="."]
 layout_mode = 0
-offset_left = 212.0
-offset_top = 126.0
-offset_right = 523.0
-offset_bottom = 483.0
+offset_left = 200.0
+offset_top = 220.0
+offset_right = 500.0
+offset_bottom = 580.0
 icon = ExtResource("1_62e2m")
 icon_alignment = 1
 expand_icon = true
 
+[node name="Label" type="Label" parent="Red"]
+offset_top = 39.0
+offset_right = 1147.0
+offset_bottom = 684.0
+theme_override_fonts/font = ExtResource("4_d2fv1")
+theme_override_font_sizes/font_size = 64
+text = "       RED"
+label_settings = SubResource("LabelSettings_qtu10")
+
 [node name="Blue" type="Button" parent="."]
 layout_mode = 0
-offset_left = 642.0
-offset_top = 129.0
-offset_right = 943.0
-offset_bottom = 480.0
+offset_left = 650.0
+offset_top = 220.0
+offset_right = 950.0
+offset_bottom = 580.0
 icon = ExtResource("2_qtu10")
 icon_alignment = 1
 expand_icon = true
+
+[node name="Label" type="Label" parent="Blue"]
+offset_top = 39.0
+offset_right = 1147.0
+offset_bottom = 684.0
+theme_override_fonts/font = ExtResource("4_d2fv1")
+theme_override_font_sizes/font_size = 64
+text = "     BLUE"
+label_settings = SubResource("LabelSettings_qtu10")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.31802, 0.31802, 0.31802, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+position = Vector2(589, 340)
+scale = Vector2(0.990016, 0.831717)
+texture = ExtResource("6_ul580")
 
 [connection signal="pressed" from="Red" to="." method="_on_red_pressed"]
 [connection signal="pressed" from="Blue" to="." method="_on_blue_pressed"]
