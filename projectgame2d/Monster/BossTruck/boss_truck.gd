@@ -1,47 +1,193 @@
 extends CharacterBody2D
 
-@export var speed: float = 100
+enum BossState { PHASE1, PHASE2_WALK, PHASE2_DASH }
+var state = BossState.PHASE1
+
+# -------- CONFIG ---------
 @export var gravity: float = 800
+@export var damage: int = 20
+@export var flash_duration: float = 0.1
 
-var left_limit: float
-var right_limit: float
-var direction: int = 1  # 1 = ขวา, -1 = ซ้าย
+@export var phase1_health: int = 200
+@export var phase2_health: int = 400
 
+@export var throw_interval: float = 3.0
+@export var throw_cycle: float = 15.0
+
+@export var walk_speed: float = 150
+@export var walk_duration: float = 3.0
+
+@export var dash_distance: float = 1000.0
+@export var dash_duration: float = 0.8
+@export var dash_delay: float = 1.0
+@export var dash_repeats: int = 3
+
+# -------- STATE ---------
+var health: int
+var walk_timer: float = 0.0
+var dash_in_progress: bool = false
+
+# -------- REFERENCES ---------
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var dash_area: Area2D = $DashArea
+var player: Node2D
+var spawn_position: Vector2
 
+# Projectile scenes
+var projectiles = [
+	preload("res://Monster/Projectiles/bottle.tscn"),
+	preload("res://Monster/Projectiles/can.tscn"),
+	preload("res://Monster/Projectiles/tank.tscn")
+]
+
+# -------- READY ---------
 func _ready():
-	# ดึง PatrolPoints จาก Level_01
-	var patrol_node = get_parent().get_node("PatroPoints")
-	# สมมติว่ามี PointA และ PointB
-	var point_a = patrol_node.get_node("PointA2")
-	var point_b = patrol_node.get_node("PointA3")
-	
-	left_limit = point_a.global_position.x
-	right_limit = point_b.global_position.x
+	health = phase1_health
+	spawn_position = global_position
+	player = get_tree().get_first_node_in_group("Player")
+	if player == null:
+		print("⚠️ Player not found!")
 
+	if dash_area:
+		dash_area.body_entered.connect(_on_dash_body_entered)
+	else:
+		print("⚠️ DashArea not found!")
+
+	start_throwing_cycle()
+
+# -------- PHYSICS ---------
 func _physics_process(delta):
-	# แรงโน้มถ่วง
+	if player == null or not is_instance_valid(player):
+		player = get_tree().get_first_node_in_group("Player")
+		if player == null:
+			return
+
+	# Gravity
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
 		velocity.y = 0
 
-	# เดินซ้ายขวา
-	velocity.x = direction * speed
+	match state:
+		BossState.PHASE1:
+			velocity.x = 0
+		BossState.PHASE2_WALK:
+			if not dash_in_progress:
+				walk_towards_player(delta)
+				walk_timer += delta
+				if walk_timer >= walk_duration:
+					walk_timer = 0
+					await _start_dash_cycle()
+		BossState.PHASE2_DASH:
+			pass
+
 	move_and_slide()
+	update_animation()
 
-	# กลับทิศเมื่อถึงขอบ
-	if position.x > right_limit:
-		direction = -1
-	elif position.x < left_limit:
-		direction = 1
+# -------- WALK ---------
+func walk_towards_player(delta):
+	var dx = player.global_position.x - global_position.x
+	if abs(dx) > 10:
+		velocity.x = sign(dx) * walk_speed
+	else:
+		velocity.x = 0
 
-	# เล่นแอนิเมชันเดิน
-	if velocity.x != 0 and is_on_floor():
-		if not anim.is_playing():
+# -------- DASH CYCLE ---------
+func _start_dash_cycle() -> void:
+	dash_in_progress = true
+	state = BossState.PHASE2_DASH
+	for i in range(dash_repeats):
+		await get_tree().create_timer(dash_delay).timeout  # Delay ก่อนพุ่ง
+		var dir_x = sign(player.global_position.x - global_position.x)
+		var elapsed = 0.0
+		while elapsed < dash_duration:
+			velocity.x = dir_x * (dash_distance / dash_duration)
+			# move_and_collide ให้ชน Player ได้
+			var col = move_and_collide(Vector2(velocity.x * get_process_delta_time(), 0))
+			if col:
+				var hit = col.get_collider()
+				if hit.is_in_group("Player") and hit.has_method("take_damage"):
+					var kb = Vector2(dir_x * 400, -200)
+					hit.take_damage(damage, kb)
+			elapsed += get_process_delta_time()
+			await get_tree().physics_frame
+		velocity.x = 0
+	dash_in_progress = false
+	state = BossState.PHASE2_WALK
+	walk_timer = 0
+
+# -------- Dash damage signal ---------
+func _on_dash_body_entered(body: Node):
+	if state == BossState.PHASE2_DASH and body.is_in_group("Player"):
+		if body.has_method("take_damage"):
+			var dir_x = sign(body.global_position.x - global_position.x)
+			var kb = Vector2(dir_x * 400, -200)
+			body.take_damage(damage, kb)
+
+# -------- THROW PROJECTILES ---------
+func start_throwing_cycle():
+	if state != BossState.PHASE1: return
+	spawn_projectile_loop()
+
+func spawn_projectile_loop():
+	if state != BossState.PHASE1: return
+	var t = throw_cycle / throw_interval
+	for i in range(int(t)):
+		spawn_projectile()
+		await get_tree().create_timer(throw_interval).timeout
+		if state != BossState.PHASE1: return
+	await get_tree().create_timer(3).timeout
+	if state == BossState.PHASE1:
+		spawn_projectile_loop()
+
+func spawn_projectile():
+	if player == null: return
+	var scene = projectiles[randi() % projectiles.size()]
+	var proj = scene.instantiate()
+	get_parent().add_child(proj)
+	proj.global_position = global_position
+
+	var dist = global_position.distance_to(player.global_position)
+	var time_to_hit = clamp(dist / 500.0, 0.4, 1.2)
+	proj.launch_at_target(global_position, player.global_position, time_to_hit)
+	proj.boss_owner = self
+
+# -------- DAMAGE ---------
+func take_damage(amount: int):
+	health -= amount
+	flash_red()
+	print("Boss HP:", health)
+	if health <= 0:
+		if state == BossState.PHASE1:
+			phase_transition()
+		else:
+			queue_free()
+
+func flash_red():
+	anim.modulate = Color(1, 0, 0)
+	await get_tree().create_timer(flash_duration).timeout
+	anim.modulate = Color(1, 1, 1)
+
+func phase_transition():
+	state = BossState.PHASE2_WALK
+	flash_transition()
+	health = phase2_health
+
+func flash_transition():
+	for i in range(6):
+		anim.modulate = Color(1, 0, 0)
+		await get_tree().create_timer(0.2).timeout
+		anim.modulate = Color(1, 1, 1)
+		await get_tree().create_timer(0.2).timeout
+
+# -------- ANIMATION ---------
+func update_animation():
+	if abs(velocity.x) > 0 and is_on_floor():
+		if anim.animation != "Walk":
 			anim.play("Walk")
 	else:
-		anim.stop()
-
-	# พลิกหันซ้ายขวา
-	anim.flip_h = direction < 0
+		if anim.animation != "Idle":
+			anim.play("Idle")
+	# Flip sprite ให้ตรงกับทิศทาง velocity.x
+	if velocity.x != 0:
+		anim.flip_h = velocity.x < 0

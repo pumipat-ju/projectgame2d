@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://7gkqg6vjq5w8"]
+
+[ext_resource type="Script" uid="uid://ce1vl2faottir" path="res://Monster/Projectiles/tank.gd" id="1_xefp6"]
+[ext_resource type="Texture2D" uid="uid://buxjqgmxrtajt" path="res://Monster/BossTruck/pixel-art-illustration-trash-can-pixelated-trash-can-trash-can-icon-pixelated-for-the-pixel-art-game-and-icon-for-website-and-video-game-old-school-retro-vector.png" id="2_gmmjv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_glt1m"]
+radius = 26.0
+height = 86.0
+
+[node name="tank" type="Area2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_xefp6")
+gravity_force = 500.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -6)
+scale = Vector2(0.201172, 0.201172)
+texture = ExtResource("2_gmmjv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_glt1m")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

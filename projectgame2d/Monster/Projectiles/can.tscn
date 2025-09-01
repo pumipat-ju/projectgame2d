@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cblidl62l6gms"]
+
+[ext_resource type="Script" uid="uid://cbrjenu6i54vw" path="res://Monster/Projectiles/can.gd" id="1_gjhqa"]
+[ext_resource type="Texture2D" uid="uid://cveomv75nckur" path="res://Monster/BossTruck/vector-pixel-art-can-empty-260nw-1097813897.png" id="1_mugxw"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_gjhqa"]
+points = PackedVector2Array(28, -3, 6, -17, -10, -19, -29, -1, -17, 9, -1, 15, 14, 14)
+
+[node name="can" type="Area2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_gjhqa")
+gravity_force = 500.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4.76837e-07, 0)
+scale = Vector2(0.220192, 0.214729)
+texture = ExtResource("1_mugxw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ConvexPolygonShape2D_gjhqa")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

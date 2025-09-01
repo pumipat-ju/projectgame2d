@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqr8tccqpl2xj"]
+[gd_scene load_steps=8 format=3 uid="uid://dqr8tccqpl2xj"]
 
 [ext_resource type="Texture2D" uid="uid://dgrsebtgsluic" path="res://Monster/BossTruck/BossTruckIdle.png" id="1_iaifw"]
 [ext_resource type="Script" uid="uid://dobk4hfyk2epr" path="res://Monster/BossTruck/boss_truck.gd" id="1_sgc1r"]
@@ -28,18 +28,37 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_iaifw"]
-radius = 31.5
-height = 81.9511
+radius = 66.5251
+height = 180.186
 
-[node name="BossTruck" type="CharacterBody2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgc1r"]
+size = Vector2(196, 150.5)
+
+[node name="BossTruck" type="CharacterBody2D" groups=["enemies"]]
+scale = Vector2(2, 2)
+collision_layer = 4
+collision_mask = 11
 script = ExtResource("1_sgc1r")
+damage = 30
+dash_distance = 500.0
+dash_duration = 0.5
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_wvgmv")
 animation = &"Walk"
 frame_progress = 0.73034
+flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.19209e-07, 4)
 rotation = -1.58868
 shape = SubResource("CapsuleShape2D_iaifw")
+
+[node name="DashArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DashArea"]
+position = Vector2(4, -4.75)
+shape = SubResource("RectangleShape2D_sgc1r")
+
+[connection signal="body_entered" from="DashArea" to="." method="_on_dash_area_body_entered"]
