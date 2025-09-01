@@ -191,10 +191,14 @@ func die():
 
 	death_tween(spawn_pos)
 
-func death_tween(spawn_position: Vector2):
+func death_tween(spawn_position: Vector2 = Vector2.ZERO):
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
 	await tween.finished
+
+	# ถ้าไม่มี spawn point ให้ใช้ global_position ปัจจุบันแทน
+	if spawn_position == Vector2.ZERO and get_parent().has_node("SpawnPoint"):
+		spawn_position = get_parent().get_node("SpawnPoint").global_position
 
 	global_position = spawn_position
 	velocity = Vector2.ZERO
@@ -205,8 +209,8 @@ func death_tween(spawn_position: Vector2):
 
 	health = max_health
 	is_dead = false
-
 	respawn_tween()
+
 
 func respawn_tween():
 	var tween = create_tween()
