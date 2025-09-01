@@ -10,6 +10,9 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_iaifw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_sgc1r")
 }],
 "loop": true,
 "name": &"Idle",
@@ -46,8 +49,7 @@ dash_duration = 0.5
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_wvgmv")
-animation = &"Walk"
-frame_progress = 0.73034
+animation = &"Idle"
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
