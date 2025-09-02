@@ -3,7 +3,7 @@ extends Control
 @onready var score_label = %Score/ScoreLabel
 @onready var kill_label = $KillLabel
 @onready var player_health_bar = $PlayerHealthBar
-#@onready var boss_health_bar = $BossHealthBar
+@onready var boss_health_bar = $BossHealthBar
 @onready var death_label = $DeathLabel
 
 func _process(_delta):
@@ -17,7 +17,7 @@ func _process(_delta):
 	player_health_bar.max_value = GameManager.player_max_health
 	player_health_bar.value = GameManager.player_health
 	# เลือดบอส
-	#if GameManager.boss_health > 0:
-		#boss_health_bar.visible = true
-		#boss_health_bar.max_value = GameManager.boss_max_health
-		#boss_health_bar.value = GameManager.boss_health
+	if GameManager.boss_health > 0:
+		boss_health_bar.visible = true
+		boss_health_bar.max_value = GameManager.boss_max_health
+		boss_health_bar.value = GameManager.boss_health

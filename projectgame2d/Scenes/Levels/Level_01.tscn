@@ -73,6 +73,48 @@ sources/0 = SubResource("TileSetAtlasSource_i7ntp")
 [node name="Level_01" type="Node2D"]
 script = ExtResource("1_5vjlm")
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.31802, 0.31802, 0.31802, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+position = Vector2(1015.58, 179.5)
+scale = Vector2(1.59505, 1.59505)
+texture = ExtResource("10_5vjlm")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.317647, 0.317647, 0.317647, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+modulate = Color(0.796078, 0.796078, 0.796078, 1)
+position = Vector2(3260.58, 179.5)
+scale = Vector2(1.59505, 1.59505)
+texture = ExtResource("10_5vjlm")
+flip_h = true
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.317647, 0.317647, 0.317647, 1)
+position = Vector2(300, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+modulate = Color(0.796078, 0.796078, 0.796078, 1)
+position = Vector2(7450.5, 180)
+scale = Vector2(1.59375, 1.59375)
+texture = ExtResource("10_5vjlm")
+flip_h = true
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(0.317647, 0.317647, 0.317647, 1)
+position = Vector2(3482, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+position = Vector2(2023.75, 179.5)
+scale = Vector2(1.59505, 1.59505)
+texture = ExtResource("10_5vjlm")
+
 [node name="LevelFinishDoor" parent="." instance=ExtResource("1_oqkjg")]
 z_index = 1
 position = Vector2(6320, 322)
@@ -108,32 +150,33 @@ position = Vector2(129, 342)
 [node name="TutorialText" type="Node2D" parent="."]
 
 [node name="Movement" type="Label" parent="TutorialText"]
-offset_left = 264.0
-offset_top = 336.0
-offset_right = 542.0
-offset_bottom = 420.0
+offset_left = 130.0
+offset_top = 180.0
+offset_right = 532.0
+offset_bottom = 318.0
 theme_override_colors/font_color = Color(0.910156, 0.730469, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("8_gwcy2")
 theme_override_font_sizes/font_size = 32
-text = "A & D To Move
-Spacebar To Jump"
+text = "กด A เดินทางซ้าย ,D เดินทางขวา
+         Spacebar กระโดด
+    (สามารถกระโดดได้ 2 ครั้ง)"
 metadata/_edit_use_anchors_ = true
 
 [node name="SetNextScene" type="Label" parent="TutorialText"]
-offset_left = 808.0
-offset_top = 256.0
-offset_right = 1239.0
-offset_bottom = 382.0
+offset_left = 634.0
+offset_top = 183.0
+offset_right = 1065.0
+offset_bottom = 321.0
 theme_override_colors/font_color = Color(0.910156, 0.730469, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("8_gwcy2")
 theme_override_font_sizes/font_size = 32
-text = "Level Finish
-Set the next scene
-from \"LevelFinishDoor\" Area"
+text = "เดินหน้ากำจัดศัตรูเพื่อหาทางออก
+                  และ
+           ไปยังด่านถัดไป  "
 metadata/_edit_use_anchors_ = true
 
 [node name="GameManager" type="Node2D" parent="."]
@@ -187,74 +230,24 @@ metadata/_edit_use_anchors_ = true
 
 [node name="PlayerHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
 layout_mode = 0
-offset_left = 182.0
-offset_top = 38.0
-offset_right = 257.0
-offset_bottom = 65.0
-
-[node name="BossHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
-visible = false
-layout_mode = 0
-offset_left = 384.0
-offset_top = 40.0
-offset_right = 459.0
-offset_bottom = 67.0
+offset_left = 57.0
+offset_top = 36.0
+offset_right = 132.0
+offset_bottom = 63.0
 
 [node name="KillLabel" type="Label" parent="UserInterface/GameUI"]
 layout_mode = 0
-offset_left = 497.0
-offset_top = 42.0
-offset_right = 537.0
-offset_bottom = 65.0
+offset_left = 344.0
+offset_top = 40.0
+offset_right = 384.0
+offset_bottom = 63.0
 
 [node name="DeathLabel" type="Label" parent="UserInterface/GameUI"]
 layout_mode = 0
-offset_left = 42.0
-offset_top = 46.0
-offset_right = 82.0
-offset_bottom = 69.0
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-modulate = Color(0.31802, 0.31802, 0.31802, 1)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-position = Vector2(1015.58, 179.5)
-scale = Vector2(1.59505, 1.59505)
-texture = ExtResource("10_5vjlm")
-
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
-modulate = Color(0.317647, 0.317647, 0.317647, 1)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
-modulate = Color(0.796078, 0.796078, 0.796078, 1)
-position = Vector2(3260.58, 179.5)
-scale = Vector2(1.59505, 1.59505)
-texture = ExtResource("10_5vjlm")
-flip_h = true
-
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
-modulate = Color(0.317647, 0.317647, 0.317647, 1)
-position = Vector2(300, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
-modulate = Color(0.796078, 0.796078, 0.796078, 1)
-position = Vector2(7450.5, 180)
-scale = Vector2(1.59375, 1.59375)
-texture = ExtResource("10_5vjlm")
-flip_h = true
-
-[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
-modulate = Color(0.317647, 0.317647, 0.317647, 1)
-position = Vector2(3482, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-position = Vector2(2023.75, 179.5)
-scale = Vector2(1.59505, 1.59505)
-texture = ExtResource("10_5vjlm")
+offset_left = 200.0
+offset_top = 41.0
+offset_right = 240.0
+offset_bottom = 64.0
 
 [node name="Bin" parent="." instance=ExtResource("13_5pmb1")]
 position = Vector2(3448, 528)

@@ -26,6 +26,7 @@ func _ready():
 			if p.stream == null:
 				push_warning("AudioManager/Level1 has no stream assigned.")
 			else:
+				p.stream.loop = true  # ทำให้ stream เล่นวนซ้ำ
 				p.play()
 		else:
 			push_warning("Node 'Level1' not found under AudioManager.")
