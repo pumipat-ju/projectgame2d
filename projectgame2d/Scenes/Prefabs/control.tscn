@@ -22,9 +22,9 @@ blue_scene = ExtResource("3_fj5cn")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_top = 39.0
-offset_right = 1915.0
-offset_bottom = 1060.0
+offset_top = -3.0
+offset_right = 1801.0
+offset_bottom = 969.0
 theme_override_fonts/font = ExtResource("4_d2fv1")
 theme_override_font_sizes/font_size = 64
 text = "SELECT"
@@ -43,9 +43,9 @@ expand_icon = true
 
 [node name="Label" type="Label" parent="Red"]
 layout_mode = 0
-offset_left = -4.0
+offset_left = -7.0
 offset_top = 32.0
-offset_right = 251.0
+offset_right = 248.0
 offset_bottom = 80.0
 theme_override_fonts/font = ExtResource("4_d2fv1")
 theme_override_font_sizes/font_size = 64
