@@ -113,7 +113,6 @@ func _play_walk_sfx():
 	if walk_sfx == null:
 		return
 
-	# แก้ไขบรรทัดที่ 116
 	var walking = is_on_floor() and absf(velocity.x) > 0.1 and knockback_timer <= 0.0 and not is_dead
 
 	if footstep_loop_mode:
