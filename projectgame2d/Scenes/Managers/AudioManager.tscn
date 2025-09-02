@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bssjjygu83iwl"]
+[gd_scene load_steps=9 format=3 uid="uid://bssjjygu83iwl"]
 
 [ext_resource type="Script" uid="uid://dxtvrrxa3w0ry" path="res://Scripts/AudioManager.gd" id="1_hp1cr"]
 [ext_resource type="AudioStream" uid="uid://d3ldv4818s140" path="res://Assets/Sound/FX/30_Jump_03.wav" id="2_esrla"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://cmx200dptd2w" path="res://sounds/Level 3.mp3" id="5_qy2l1"]
 [ext_resource type="AudioStream" uid="uid://cbaiirfgrj5o3" path="res://sounds/Boss-Level4.mp3" id="6_y7mjd"]
 [ext_resource type="AudioStream" uid="uid://b7sjj2sish4tf" path="res://Assets/Sound/FX/walking-96582.mp3" id="7_qy2l1"]
+[ext_resource type="AudioStream" uid="uid://dnyx8ry7yntms" path="res://Assets/Sound/FX/pistol-shot-233473.mp3" id="8_5h2c1"]
 
 [node name="AudioManager" type="Node"]
 script = ExtResource("1_hp1cr")
@@ -33,7 +34,7 @@ pitch_scale = 0.5
 
 [node name="Level2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_y7mjd")
-volume_db = -2.0
+volume_db = -15.0
 pitch_scale = 0.5
 
 [node name="Level3" type="AudioStreamPlayer" parent="."]
@@ -48,3 +49,11 @@ pitch_scale = 0.5
 
 [node name="WalkSfx" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_qy2l1")
+volume_db = 5.0
+parameters/looping = true
+
+[node name="ShootSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_5h2c1")
+volume_db = -20.0
+
+[node name="SlashSfx" type="AudioStreamPlayer" parent="."]

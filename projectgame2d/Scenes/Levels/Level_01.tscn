@@ -80,6 +80,7 @@ collision_mask = 2
 next_scene = ExtResource("2_0ac5u")
 
 [node name="Coins" type="Node2D" parent="."]
+visible = false
 
 [node name="Coin" parent="Coins" instance=ExtResource("3_rrh80")]
 position = Vector2(576, 406)

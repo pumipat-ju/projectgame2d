@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export_category("Player Properties")
 @export var move_speed : float = 400
 @export var jump_force : float = 1000
-@export var gravity : float = 2800.0   # CHANGED: จาก 15 ต่อเฟรม -> 900 ต่อวินาที^2
+@export var gravity : float = 2800.0
 @export var max_jump_count : int = 2
 var jump_count : int = 2
 
@@ -35,47 +35,46 @@ var shoot_lock := false   # ยึดอนิเมชัน Shoot ให้ท
 @onready var shoot_sprite:  AnimatedSprite2D = $AnimatedSprite2D  # ตอนนี้ใช้ node เดียวกัน
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
-# --------- footstep ----------
+
+# --------- FOOTSTEP ----------
+@export var footstep_interval_base := 0.35     # ใช้ในโหมดจังหวะก้าว
+@export var footstep_loop_mode := true         # true = loop ต่อเนื่อง, false = จังหวะก้าว
 var footstep_timer := 0.0
-@export var footstep_interval_base := 0.35
+
+var facing_left = false
 
 func _am() -> Node:
 	return get_tree().get_root().get_node_or_null("AudioManager")
-
-var facing_left = false
 
 func _ready():
 	if shoot_sprite.sprite_frames and shoot_sprite.sprite_frames.has_animation("Shoot"):
 		shoot_sprite.sprite_frames.set_animation_loop("Shoot", false)
 
 # --------- BUILT-IN FUNCTIONS ----------
-# CHANGED: ย้ายลูปหลักมาอยู่ในฟิสิกส์ลูป
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
-	
+
+	# timers
 	footstep_timer = max(0.0, footstep_timer - delta)
-	# ลดคูลดาวน์ยิงในฟิสิกส์ลูป (คงที่ข้ามเครื่อง)
 	shoot_timer = max(0.0, shoot_timer - delta)
 
-	movement(delta)        # เคลื่อนที่/แรงโน้มถ่วงคูณ delta
-	move_and_slide()       # เรียกที่นี่ "ที่เดียว"
+	movement(delta)
+	move_and_slide()
 
 	handle_shooting()
 	player_animations()
 	flip_player()
 
-# เดิมใช้ในฟิสิกส์ → ไม่ใช้แล้วเพื่อกันเฟรมเรตเพี้ยน
 func _process(_delta): pass
 
 # --------- MOVEMENT ----------
 func movement(delta):
-	if knockback_timer > 0:
+	if knockback_timer > 0.0:
 		velocity = knockback_velocity
 		knockback_timer -= delta
 	else:
 		if not is_on_floor():
-			# CHANGED: gravity หน่วย px/s^2 → คูณ delta
 			velocity.y += gravity * delta
 		else:
 			jump_count = max_jump_count
@@ -83,30 +82,17 @@ func movement(delta):
 		handle_jumping()
 
 		var inputAxis = Input.get_axis("Left", "Right")
-		# move_speed เป็น "ความเร็ว" px/s ไม่ต้องคูณ delta
 		velocity.x = inputAxis * move_speed
-		# ------------------ เล่นเสียงเดิน ------------------
-		var am := _am()  # ฟังก์ชันหาตำแหน่ง AudioManager
-		if am:
-			var walk_sfx: AudioStreamPlayer = am.get_node_or_null("WalkSfx")
-			if walk_sfx:
-				if inputAxis != 0:
-					# ถ้ากำลังเดิน และเสียงยังไม่เล่น → เล่น
-					if not walk_sfx.playing:
-						walk_sfx.pitch_scale = randf_range(0.95, 1.05)
-						walk_sfx.play()
-				else:
-					# ถ้าหยุดเดิน และเสียงกำลังเล่น → หยุด
-					if walk_sfx.playing:
-						walk_sfx.stop()
 
-
-
-	# IMPORTANT: ไม่เรียก move_and_slide() ที่นี่แล้ว
+		# ----- WALK SFX -----
+		_play_walk_sfx()
 
 func handle_jumping():
 	if Input.is_action_just_pressed("Jump"):
-		AudioManager.jump_sfx.play()
+		# เล่นเสียงกระโดด (ต้องมี AudioManager เป็น Autoload และมี jump_sfx)
+		if Engine.has_singleton("AudioManager"):
+			AudioManager.jump_sfx.play()
+
 		if is_on_floor():
 			jump()
 			jump_count -= 1
@@ -117,6 +103,44 @@ func handle_jumping():
 func jump():
 	jump_tween()
 	velocity.y = -jump_force
+
+# --------- WALK SFX HELPER ----------
+func _play_walk_sfx():
+	var am := _am()
+	if am == null:
+		return
+	var walk_sfx: AudioStreamPlayer = am.get_node_or_null("WalkSfx")
+	if walk_sfx == null:
+		return
+
+	# แก้ไขบรรทัดที่ 116
+	var walking = is_on_floor() and absf(velocity.x) > 0.1 and knockback_timer <= 0.0 and not is_dead
+
+	if footstep_loop_mode:
+		# โหมด loop ต่อเนื่อง
+		if walking:
+			if not walk_sfx.playing:
+				walk_sfx.pitch_scale = randf_range(0.97, 1.03)
+				walk_sfx.play()   # แนะนำเปิด Loop ใน Inspector
+		else:
+			if walk_sfx.playing:
+				walk_sfx.stop()
+	else:
+		# โหมดจังหวะก้าว (ติ๊บ ๆ ตามสปีด)
+		if walking:
+			# แก้ไขบรรทัดที่ 130-131
+			var spd = clamp(absf(velocity.x) / max(1.0, move_speed), 0.6, 1.4)
+			var interval = footstep_interval_base / spd
+			if footstep_timer <= 0.0:
+				walk_sfx.pitch_scale = randf_range(0.95, 1.05)
+				walk_sfx.play()
+				footstep_timer = interval
+		else:
+			footstep_timer = 0.0
+			# ถ้าเผลอเปิด loop ที่ไฟล์เสียงไว้ ให้หยุดด้วย
+			if walk_sfx.playing and walk_sfx.stream and walk_sfx.stream.loop:
+				walk_sfx.stop()
+
 
 # --------- ANIMATIONS ----------
 func player_animations():
@@ -130,7 +154,7 @@ func _set_base_animation():
 	particle_trails.emitting = false
 
 	if is_on_floor():
-		if abs(velocity.x) > 0:
+		if abs(velocity.x) > 0.1:
 			particle_trails.emitting = true
 			if player_sprite.animation != "Walk":
 				player_sprite.play("Walk")
@@ -145,9 +169,9 @@ func _set_base_animation():
 		player_sprite.speed_scale = 1.0
 
 func flip_player():
-	if velocity.x < 0:
+	if velocity.x < 0.0:
 		facing_left = true
-	elif velocity.x > 0:
+	elif velocity.x > 0.0:
 		facing_left = false
 
 	player_sprite.flip_h = facing_left
@@ -159,7 +183,7 @@ func handle_shooting():
 	var just_pressed := Input.is_action_just_pressed("Shoot")
 	var just_released := Input.is_action_just_released("Shoot")
 
-	if just_pressed and !shoot_lock:
+	if just_pressed and not shoot_lock:
 		shoot_lock = true
 		_start_shoot_loop_per_second()
 
@@ -188,18 +212,20 @@ func _fire_bullet():
 		if bullet.has_method("set_direction"):
 			bullet.set_direction(dir)
 
-	if Engine.has_singleton("AudioManager"):
-		AudioManager.shoot_sfx.play()
+	# เล่นเสียงยิงตอนยิงจริง (เรียกฟังก์ชัน helper)
+	_play_shoot_sfx()
+
+
 
 func _start_shoot_loop_per_second():
-	if !shoot_sprite.sprite_frames or !shoot_sprite.sprite_frames.has_animation("Shoot"):
+	if not shoot_sprite.sprite_frames or not shoot_sprite.sprite_frames.has_animation("Shoot"):
 		return
 	var frames := shoot_sprite.sprite_frames.get_frame_count("Shoot")
 	var fps := float(shoot_sprite.sprite_frames.get_animation_speed("Shoot"))
 	if fps <= 0.0:
 		fps = 1.0
 	var base_duration := float(frames) / fps
-	shoot_sprite.speed_scale = base_duration
+	shoot_sprite.speed_scale = base_duration           # ทำให้ความยาวรอบ = 1 วินาที
 	shoot_sprite.sprite_frames.set_animation_loop("Shoot", true)
 	shoot_sprite.play("Shoot")
 
@@ -210,7 +236,7 @@ func _stop_shoot_loop():
 	shoot_sprite.stop()
 
 func _on_shoot_sprite_animation_finished():
-	if !Input.is_action_pressed("Shoot"):
+	if not Input.is_action_pressed("Shoot"):
 		if shoot_lock:
 			shoot_lock = false
 		_stop_shoot_loop()
@@ -248,6 +274,9 @@ func die():
 	if is_dead:
 		return
 	is_dead = true
+
+	# หยุดเสียงเดินทันที
+	_stop_walk_sfx()
 
 	if Engine.has_singleton("AudioManager"):
 		AudioManager.death_sfx.play()
@@ -291,3 +320,23 @@ func jump_tween():
 func _on_collision_body_entered(_body):
 	if _body.is_in_group("Traps"):
 		take_damage(9999)
+
+# --------- UTIL ----------
+func _stop_walk_sfx():
+	var am := _am()
+	if am:
+		var walk_sfx: AudioStreamPlayer = am.get_node_or_null("WalkSfx")
+		if walk_sfx and walk_sfx.playing:
+			walk_sfx.stop()
+# --------- SFX HELPERS ----------
+func _play_shoot_sfx():
+	var am := _am()
+	if am == null:
+		return
+
+	var shoot_sfx: AudioStreamPlayer = am.get_node_or_null("ShootSfx")
+	if shoot_sfx:
+		shoot_sfx.pitch_scale = randf_range(0.97, 1.03)
+		if shoot_sfx.playing:
+			shoot_sfx.stop()
+		shoot_sfx.play()
