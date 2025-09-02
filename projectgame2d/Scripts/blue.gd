@@ -80,6 +80,7 @@ func movement(delta):
 
 func handle_jumping():
 	if Input.is_action_just_pressed("Jump"):
+		AudioManager.jump_sfx.play()
 		if is_on_floor():
 			jump()
 			jump_count -= 1

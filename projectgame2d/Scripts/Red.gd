@@ -83,6 +83,7 @@ func movement(delta):
 
 func handle_jumping():
 	if Input.is_action_just_pressed("Jump"):
+		AudioManager.jump_sfx.play()
 		if is_on_floor():
 			jump()
 			jump_count -= 1
@@ -92,9 +93,6 @@ func handle_jumping():
 
 func jump():
 	jump_tween()
-	if Engine.has_singleton("AudioManager"):
-		AudioManager.jump_sfx.play()
-	# ความเร็วเริ่มต้นของการกระโดด (px/s) → ไม่คูณ delta
 	velocity.y = -jump_force
 
 # --------- ANIMATIONS ----------

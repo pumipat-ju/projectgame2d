@@ -11,10 +11,30 @@ func _ready():
 
 	var player = scene_to_spawn.instantiate()
 	add_child(player)
-	
 	player.add_to_group("Player")
-	
+
 	if spawn_point:
 		player.global_position = spawn_point.global_position
 	else:
 		push_warning("SpawnPoint not found. Player will spawn at (0,0).")
+
+	# --- เล่นเพลงด่าน 1 (ใช้ Autoload ที่ /root/AudioManager) ---
+	var am := get_node_or_null("/root/AudioManager")
+	if am:
+		var p: AudioStreamPlayer = am.get_node_or_null("Level3")
+		if p:
+			if p.stream == null:
+				push_warning("AudioManager/Level3 has no stream assigned.")
+			else:
+				p.play()
+		else:
+			push_warning("Node 'Level3' not found under AudioManager.")
+	else:
+		push_warning("Autoload 'AudioManager' not found. Add it in Project Settings → Autoload.")
+
+func _exit_tree():
+	var am := get_node_or_null("/root/AudioManager")
+	if am:
+		var p: AudioStreamPlayer = am.get_node_or_null("Level3")
+		if p:
+			p.stop()
