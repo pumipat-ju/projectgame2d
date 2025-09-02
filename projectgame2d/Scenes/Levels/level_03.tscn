@@ -13,7 +13,7 @@
 [ext_resource type="Script" uid="uid://di23naiwtfni3" path="res://Scripts/GameUI.gd" id="9_4kuxc"]
 [ext_resource type="Texture2D" uid="uid://clreg520jah1j" path="res://Assets/platformPack_item008.png" id="10_2fied"]
 [ext_resource type="Texture2D" uid="uid://ciwlwgmhmtg0e" path="res://Background/stage3.2.png" id="11_ifgmf"]
-[ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="14_kqysg"]
+[ext_resource type="PackedScene" uid="uid://hk8ilvwk37rn" path="res://Monster/CanFly/can_fly.tscn" id="14_5qict"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i4385"]
 texture = ExtResource("4_34g67")
@@ -416,5 +416,17 @@ scale = Vector2(1.59505, 1.59505)
 texture = ExtResource("11_ifgmf")
 flip_h = true
 
-[node name="Bin" parent="." instance=ExtResource("14_kqysg")]
-position = Vector2(1179, 80)
+[node name="CanFly" parent="." instance=ExtResource("14_5qict")]
+position = Vector2(1234, -477)
+
+[node name="CanFly2" parent="." instance=ExtResource("14_5qict")]
+position = Vector2(858, -1406)
+
+[node name="CanFly3" parent="." instance=ExtResource("14_5qict")]
+position = Vector2(378, -2591)
+
+[node name="CanFly4" parent="." instance=ExtResource("14_5qict")]
+position = Vector2(1397, -3295)
+
+[node name="CanFly5" parent="." instance=ExtResource("14_5qict")]
+position = Vector2(1537, -3653)

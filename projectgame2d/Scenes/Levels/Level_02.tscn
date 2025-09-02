@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://bjb3dx2x4bocm"]
+[gd_scene load_steps=19 format=4 uid="uid://bjb3dx2x4bocm"]
 
 [ext_resource type="Script" uid="uid://cmb7vlxsgbh8" path="res://Scenes/Levels/level_02.gd" id="1_20c78"]
 [ext_resource type="PackedScene" uid="uid://bfmh3fm2de78o" path="res://Scenes/Prefabs/Coin.tscn" id="3_nht2m"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bl8c8qxfe5uvm" path="res://Scenes/Levels/level_03.tscn" id="10_72l3o"]
 [ext_resource type="Texture2D" uid="uid://njoq72klowom" path="res://Background/stage2.png" id="11_enwln"]
 [ext_resource type="PackedScene" uid="uid://ceje3v0obbkuo" path="res://Monster/Bin/bin.tscn" id="12_enwln"]
+[ext_resource type="PackedScene" uid="uid://hk8ilvwk37rn" path="res://Monster/CanFly/can_fly.tscn" id="13_72l3o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_enwln"]
 texture = ExtResource("5_8107p")
@@ -485,4 +486,16 @@ position = Vector2(2800, 533)
 position = Vector2(4726, 17)
 
 [node name="Bin3" parent="." instance=ExtResource("12_enwln")]
-position = Vector2(3058, -943)
+position = Vector2(6672, 75)
+
+[node name="CanFly" parent="." instance=ExtResource("13_72l3o")]
+position = Vector2(4459, -1065)
+
+[node name="Bin4" parent="." instance=ExtResource("12_enwln")]
+position = Vector2(8593, -1073)
+
+[node name="Bin5" parent="." instance=ExtResource("12_enwln")]
+position = Vector2(2724, -512)
+
+[node name="Bin6" parent="." instance=ExtResource("12_enwln")]
+position = Vector2(7991, -528)

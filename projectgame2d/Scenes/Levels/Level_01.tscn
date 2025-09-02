@@ -260,4 +260,13 @@ texture = ExtResource("10_5vjlm")
 position = Vector2(3448, 528)
 
 [node name="CanFly" parent="." instance=ExtResource("14_xpj05")]
-position = Vector2(2640, 98)
+position = Vector2(3777, 58)
+
+[node name="Bin2" parent="." instance=ExtResource("13_5pmb1")]
+position = Vector2(5682, 659)
+
+[node name="Bin3" parent="." instance=ExtResource("13_5pmb1")]
+position = Vector2(2860, 397)
+
+[node name="Bin4" parent="." instance=ExtResource("13_5pmb1")]
+position = Vector2(1355, 397)
