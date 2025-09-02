@@ -423,10 +423,7 @@ position = Vector2(1234, -477)
 position = Vector2(858, -1406)
 
 [node name="CanFly3" parent="." instance=ExtResource("14_5qict")]
-position = Vector2(378, -2591)
-
-[node name="CanFly4" parent="." instance=ExtResource("14_5qict")]
-position = Vector2(1397, -3295)
+position = Vector2(565, -2942)
 
 [node name="CanFly5" parent="." instance=ExtResource("14_5qict")]
-position = Vector2(1537, -3653)
+position = Vector2(1513, -3610)
