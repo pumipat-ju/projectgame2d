@@ -304,33 +304,18 @@ position = Vector2(1825, 299)
 
 [node name="TutorialText" type="Node2D" parent="."]
 
-[node name="Movement" type="Label" parent="TutorialText"]
-offset_left = 153.0
-offset_top = -104.0
-offset_right = 432.0
-offset_bottom = -20.0
-theme_override_colors/font_color = Color(0.910156, 0.730469, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/font = ExtResource("4_ofov5")
-theme_override_font_sizes/font_size = 32
-text = "A & D To Move
-Spacebar To Jump"
-metadata/_edit_use_anchors_ = true
-
 [node name="SetNextScene" type="Label" parent="TutorialText"]
-offset_left = 980.0
-offset_top = -123.0
-offset_right = 1416.0
-offset_bottom = 3.0
+offset_left = 742.0
+offset_top = -115.0
+offset_right = 1178.0
+offset_bottom = 11.0
 theme_override_colors/font_color = Color(0.910156, 0.730469, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("4_ofov5")
 theme_override_font_sizes/font_size = 32
-text = "Level Finish
-Set the next scene
-from \"LevelFinishDoor\" Area"
+text = "        จัดการรถขยะ 
+เพิ่อหนีออกจากโรงงานขยะ"
 metadata/_edit_use_anchors_ = true
 
 [node name="GameManager" type="Node2D" parent="."]
