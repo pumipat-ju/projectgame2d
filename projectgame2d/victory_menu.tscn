@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3 uid="uid://chajhqhm28vq0"]
+
+[ext_resource type="Script" uid="uid://ckw4o0y8em2iw" path="res://victory_menu.gd" id="1_w2usb"]
+
+[sub_resource type="FontFile" id="FontFile_7a87b"]
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/90/0/ascent = 0.0
+cache/0/90/0/descent = 0.0
+cache/0/90/0/underline_position = 0.0
+cache/0/90/0/underline_thickness = 0.0
+cache/0/90/0/scale = 1.0
+
+[node name="VictoryMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1811.0
+offset_bottom = 1020.0
+script = ExtResource("1_w2usb")
+
+[node name="RestartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 567.0
+offset_top = 342.0
+offset_right = 820.0
+offset_bottom = 446.0
+theme_override_font_sizes/font_size = 70
+text = "Restart"
+
+[node name="QuitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1081.0
+offset_top = 339.0
+offset_right = 1236.0
+offset_bottom = 443.0
+theme_override_font_sizes/font_size = 70
+text = "Quit"
+
+[node name="KillsLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 655.0
+offset_top = 222.0
+offset_right = 712.0
+offset_bottom = 318.0
+theme_override_font_sizes/font_size = 70
+
+[node name="DeathsLabel" type="Label" parent="."]
+offset_left = 643.0
+offset_top = 103.0
+offset_right = 683.0
+offset_bottom = 199.0
+theme_override_font_sizes/font_size = 70
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 776.0
+offset_top = -3.0
+offset_right = 1103.0
+offset_bottom = 118.0
+theme_override_fonts/font = SubResource("FontFile_7a87b")
+theme_override_font_sizes/font_size = 90
+text = "You Win"

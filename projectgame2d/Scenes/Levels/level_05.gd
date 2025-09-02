@@ -8,6 +8,9 @@ func _ready():
 	if scene_to_spawn == null:
 		scene_to_spawn = DEFAULT_PLAYER
 		push_warning("GameState.selected_player_scene is null. Using DEFAULT_PLAYER (Red).")
+	
+	# ✅ ย้าย connect ออกมาไม่ว่า player จะเป็น null หรือไม่
+	GameManager.boss_died.connect(_on_boss_died)
 
 	var player = scene_to_spawn.instantiate()
 	add_child(player)
@@ -26,12 +29,22 @@ func _ready():
 			if p.stream == null:
 				push_warning("AudioManager/BossFight has no stream assigned.")
 			else:
-				p.stream.loop = true  # ทำให้ stream เล่นวนซ้ำ
 				p.play()
 		else:
 			push_warning("Node 'BossFight' not found under AudioManager.")
 	else:
 		push_warning("Autoload 'AudioManager' not found. Add it in Project Settings → Autoload.")
+
+
+func _on_boss_died():
+	var victory_scene: PackedScene = preload("res://victory_menu.tscn")
+	var victory_menu = victory_scene.instantiate()
+	add_child(victory_menu)
+
+	# ✅ ให้เมนูครอบจอเสมอ
+	if victory_menu is Control:
+		victory_menu.set_anchors_preset(Control.PRESET_FULL_RECT)
+
 
 func _exit_tree():
 	var am := get_node_or_null("/root/AudioManager")
