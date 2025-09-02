@@ -411,7 +411,7 @@ texture = ExtResource("11_ifgmf")
 modulate = Color(0.31802, 0.31802, 0.31802, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2(803, -2906)
+position = Vector2(803, -2905)
 scale = Vector2(1.59505, 1.59505)
 texture = ExtResource("11_ifgmf")
 flip_h = true

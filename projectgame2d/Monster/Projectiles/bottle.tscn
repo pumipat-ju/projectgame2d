@@ -9,7 +9,7 @@ height = 92.0
 
 [node name="Bottle" type="Area2D"]
 collision_layer = 8
-collision_mask = 3
+collision_mask = 2
 script = ExtResource("1_whsc7")
 gravity_force = 500.0
 

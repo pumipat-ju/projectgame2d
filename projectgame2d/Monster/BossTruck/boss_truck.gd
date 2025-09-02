@@ -5,10 +5,10 @@ var state = BossState.PHASE1
 
 # -------- CONFIG ---------
 @export var gravity: float = 800
-@export var damage: int = 20
+@export var damage: int = 50
 @export var flash_duration: float = 0.1
 
-@export var phase1_health: int = 200
+@export var phase1_health: int = 400
 @export var phase2_health: int = 400
 
 @export var throw_interval: float = 3.0
@@ -53,6 +53,12 @@ func _ready():
 		dash_area.body_entered.connect(_on_dash_body_entered)
 	else:
 		print("⚠️ DashArea not found!")
+
+	# ตั้งค่าหลอดบอสแบบ “รวมสองเฟส”
+	var max_total := phase1_health + phase2_health
+	GameManager.boss_max_health = max_total
+	GameManager.boss_health = max_total  # เริ่มเต็ม
+	# (จะโชว์หลอดจริงเมื่อโดนครั้งแรก ตามโค้ดด้านล่าง)
 
 	start_throwing_cycle()
 
@@ -155,25 +161,35 @@ func spawn_projectile():
 
 # -------- DAMAGE ---------
 func take_damage(amount: int):
-	# แสดง UI เลือดบอสครั้งแรก
+	# โชว์หลอดบอสครั้งแรกเมื่อโดน
 	if not boss_health_bar_shown:
 		var ui = get_tree().get_root().get_node_or_null("UserInterface/GameUI")
 		if ui and ui.has_node("BossHealthBar"):
 			ui.get_node("BossHealthBar").visible = true
 		boss_health_bar_shown = true
 
-	# ลด HP
-	health -= amount
-	GameManager.boss_health = health  # อัปเดต UI
+	# ลด HP ของ "เฟสปัจจุบัน" และอัปเดต "เลือดรวมคงเหลือ"
+	health = max(0, health - amount)
+	_update_boss_health_total()
+
 	flash_red()
-	print("Boss HP:", health)
+	print("Boss HP (phase cur):", health, " | total left:", _get_total_left())
 
 	if health <= 0:
 		if state == BossState.PHASE1:
 			phase_transition()
 		else:
+			# PHASE2 ตาย → กด GameManager = 0 แล้วค่อย free
+			GameManager.boss_health = 0
 			queue_free()
 
+# รวมเลือดคงเหลือ: PHASE1 = health + phase2_health (ยังไม่ได้ใช้), PHASE2 = health
+func _get_total_left() -> int:
+	return (health + phase2_health) if state == BossState.PHASE1 else health
+
+func _update_boss_health_total() -> void:
+	# อัปเดตค่าไป GameManager เป็น "เลือดรวมคงเหลือ" เสมอ
+	GameManager.boss_health = _get_total_left()
 
 func flash_red():
 	anim.modulate = Color(1, 0, 0)
@@ -181,9 +197,11 @@ func flash_red():
 	anim.modulate = Color(1, 1, 1)
 
 func phase_transition():
+	# เข้าสู่ PHASE2: ตั้งเลือดเฟสใหม่ แล้วอัปเดต "เลือดรวมคงเหลือ" (ซึ่งเท่ากับ phase2_health)
 	state = BossState.PHASE2_WALK
 	flash_transition()
 	health = phase2_health
+	_update_boss_health_total()  # ตอนนี้ total = phase2_health พอดี
 
 func flash_transition():
 	for i in range(6):
@@ -200,6 +218,6 @@ func update_animation():
 	else:
 		if anim.animation != "Idle":
 			anim.play("Idle")
-	# Flip sprite ให้ตรงกับทิศทาง velocity.x
+	# Flip sprite ให้ตรงกับทิศทาง
 	if velocity.x != 0:
 		anim.flip_h = velocity.x < 0

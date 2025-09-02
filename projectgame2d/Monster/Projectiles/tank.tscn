@@ -9,7 +9,7 @@ height = 86.0
 
 [node name="tank" type="Area2D"]
 collision_layer = 8
-collision_mask = 3
+collision_mask = 2
 script = ExtResource("1_xefp6")
 gravity_force = 500.0
 

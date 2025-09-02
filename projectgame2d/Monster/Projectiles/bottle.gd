@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var damage: int = 20
+@export var damage: int = 25
 @export var gravity_force: float = 300
 @export var boss_owner: Node
 @export var life_time: float = 6.0
