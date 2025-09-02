@@ -295,7 +295,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("4_ecyoo")
 theme_override_font_sizes/font_size = 32
-text = "คงใกล้ถึงทางออกแล้วสินะ"
+text = "We're almost at the exit!"
 metadata/_edit_use_anchors_ = true
 
 [node name="GameManager" type="Node2D" parent="."]

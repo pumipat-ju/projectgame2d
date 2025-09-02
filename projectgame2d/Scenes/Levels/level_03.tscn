@@ -302,7 +302,8 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("7_0yyqy")
 theme_override_font_sizes/font_size = 32
-text = "ทางออกอยู่ข้างบน ต้องเริ่มกระโดดแล้ว"
+text = "The exit is upstairs.
+I guess I have to climb up there!"
 
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource("8_8tkhk")

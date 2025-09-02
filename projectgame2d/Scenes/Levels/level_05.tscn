@@ -314,8 +314,8 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("4_ofov5")
 theme_override_font_sizes/font_size = 32
-text = "        จัดการรถขยะ 
-เพิ่อหนีออกจากโรงงานขยะ"
+text = "             Defeat the  boss 
+to escape the garbage factory!"
 metadata/_edit_use_anchors_ = true
 
 [node name="GameManager" type="Node2D" parent="."]
