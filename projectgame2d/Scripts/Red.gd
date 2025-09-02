@@ -35,6 +35,12 @@ var shoot_lock := false   # ยึดอนิเมชัน Shoot ให้ท
 @onready var shoot_sprite:  AnimatedSprite2D = $AnimatedSprite2D  # ตอนนี้ใช้ node เดียวกัน
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
+# --------- footstep ----------
+var footstep_timer := 0.0
+@export var footstep_interval_base := 0.35
+
+func _am() -> Node:
+	return get_tree().get_root().get_node_or_null("AudioManager")
 
 var facing_left = false
 
@@ -47,7 +53,8 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
-
+	
+	footstep_timer = max(0.0, footstep_timer - delta)
 	# ลดคูลดาวน์ยิงในฟิสิกส์ลูป (คงที่ข้ามเครื่อง)
 	shoot_timer = max(0.0, shoot_timer - delta)
 
@@ -78,6 +85,22 @@ func movement(delta):
 		var inputAxis = Input.get_axis("Left", "Right")
 		# move_speed เป็น "ความเร็ว" px/s ไม่ต้องคูณ delta
 		velocity.x = inputAxis * move_speed
+		# ------------------ เล่นเสียงเดิน ------------------
+		var am := _am()  # ฟังก์ชันหาตำแหน่ง AudioManager
+		if am:
+			var walk_sfx: AudioStreamPlayer = am.get_node_or_null("WalkSfx")
+			if walk_sfx:
+				if inputAxis != 0:
+					# ถ้ากำลังเดิน และเสียงยังไม่เล่น → เล่น
+					if not walk_sfx.playing:
+						walk_sfx.pitch_scale = randf_range(0.95, 1.05)
+						walk_sfx.play()
+				else:
+					# ถ้าหยุดเดิน และเสียงกำลังเล่น → หยุด
+					if walk_sfx.playing:
+						walk_sfx.stop()
+
+
 
 	# IMPORTANT: ไม่เรียก move_and_slide() ที่นี่แล้ว
 

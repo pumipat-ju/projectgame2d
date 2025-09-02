@@ -35,7 +35,13 @@ var slash_fired := false  # เช็คว่าคลื่นดาบยิ�
 @onready var player_sprite = $AnimatedSprite2D
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
+# --------- footstep ----------
+var footstep_timer := 0.0
+@export var footstep_interval_base := 0.35
 
+func _am() -> Node:
+	return get_tree().get_root().get_node_or_null("AudioManager")
+	
 # --------- READY ----------
 func _ready():
 	player_sprite.animation_finished.connect(_on_player_sprite_animation_finished)
@@ -45,6 +51,8 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
+		
+	footstep_timer = max(0.0, footstep_timer - delta)
 
 	movement(delta)        # <-- เคลื่อนที่/แรงโน้มถ่วงคูณ delta
 	move_and_slide()       # <-- เรียกที่นี่ "ที่เดียว" ในฟิสิกส์ลูป
@@ -74,6 +82,20 @@ func movement(delta):
 		var inputAxis = Input.get_axis("Left","Right")
 		# move_speed คือ "ความเร็ว" px/s ไม่ต้องคูณ delta
 		velocity.x = inputAxis * move_speed
+		# ------------------ เล่นเสียงเดิน ------------------
+		var am := _am()  # ฟังก์ชันหาตำแหน่ง AudioManager
+		if am:
+			var walk_sfx: AudioStreamPlayer = am.get_node_or_null("WalkSfx")
+			if walk_sfx:
+				if inputAxis != 0:
+					# ถ้ากำลังเดิน และเสียงยังไม่เล่น → เล่น
+					if not walk_sfx.playing:
+						walk_sfx.pitch_scale = randf_range(0.95, 1.05)
+						walk_sfx.play()
+				else:
+					# ถ้าหยุดเดิน และเสียงกำลังเล่น → หยุด
+					if walk_sfx.playing:
+						walk_sfx.stop()
 
 	# IMPORTANT: ตัด move_and_slide() ออกจากที่นี่
 	# ให้ไปเรียกใน _physics_process() แทน
