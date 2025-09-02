@@ -62,6 +62,7 @@ func _physics_process(delta: float) -> void:
 	player_animations()
 	flip_player()
 
+
 func _process(_delta): pass
 
 # --------- MOVEMENT ----------
@@ -146,7 +147,7 @@ func player_animations():
 func _set_base_animation():
 	particle_trails.emitting = false
 	if is_on_floor():
-		if absf(velocity.x) > 0.1:
+		if abs(velocity.x) > 0.1:   # <- เปลี่ยน absf เป็น abs
 			particle_trails.emitting = true
 			if player_sprite.animation != "Walk":
 				player_sprite.play("Walk")
@@ -169,7 +170,7 @@ func flip_player():
 
 # --------- SLASH ----------
 func handle_slash():
-	var just_pressed := Input.is_action_just_pressed("Slash")
+	var just_pressed = Input.is_action_just_pressed("Slash")
 	if just_pressed and not slash_lock:
 		slash_lock = true
 		slash_fired = false
@@ -193,12 +194,12 @@ func _fire_slash():
 		var slash = slash_scene.instantiate()
 		get_parent().add_child(slash)
 
-		var off := slash_spawn_offset
+		var off = slash_spawn_offset
 		if player_sprite.flip_h:
 			off.x = -off.x
 		slash.global_position = global_position + off
 
-		var dir := Vector2.LEFT if player_sprite.flip_h else Vector2.RIGHT
+		var dir = Vector2.LEFT if player_sprite.flip_h else Vector2.RIGHT
 		if slash.has_method("set_direction"):
 			slash.set_direction(dir)
 
@@ -222,6 +223,7 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO):
 		die()
 
 func flash_red():
+	_play_damage_sfx()
 	player_sprite.modulate = Color(1, 0, 0)
 	var timer = get_tree().create_timer(flash_duration)
 	await timer.timeout
@@ -241,7 +243,7 @@ func die():
 
 	velocity = Vector2.ZERO
 
-	var spawn_pos := Vector2.ZERO
+	var spawn_pos = Vector2.ZERO
 	if get_parent().has_node("SpawnPoint"):
 		spawn_pos = get_parent().get_node("SpawnPoint").global_position
 
@@ -301,3 +303,23 @@ func _play_slash_sfx():
 		if slash_sfx.playing:
 			slash_sfx.stop()  # รีสตาร์ตให้ดังทันที
 		slash_sfx.play()
+
+func _play_damage_sfx():
+	var am := _am()
+	if am == null:
+		return
+	# หาเป็น Node ลูกชื่อ DamageSfx
+	var dmg: AudioStreamPlayer = am.get_node_or_null("DamageSfx")
+	if dmg:
+		if dmg.playing:
+			dmg.stop()
+		dmg.play()
+		dmg.seek(0.5)
+		return
+	# หรือถ้าเก็บเป็น property ในสคริปต์ของ AudioManager
+	if Engine.has_singleton("AudioManager") and "DamageSfx" in AudioManager:
+		var p = AudioManager.DamageSfx
+		if p and (p is AudioStreamPlayer or p is AudioStreamPlayer2D):
+			if p.playing:
+				p.stop()
+			p.play()
