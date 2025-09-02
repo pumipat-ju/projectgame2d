@@ -17,7 +17,7 @@ func _process(_delta):
 	player_health_bar.max_value = GameManager.player_max_health
 	player_health_bar.value = GameManager.player_health
 	# เลือดบอส
-	if GameManager.boss_health > 0:
+	if GameManager.boss_health >= 0:
 		boss_health_bar.visible = true
 		boss_health_bar.max_value = GameManager.boss_max_health
 		boss_health_bar.value = GameManager.boss_health

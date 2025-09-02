@@ -37,6 +37,7 @@ func _ready():
 
 
 func _on_boss_died():
+	await get_tree().create_timer(2.0).timeout
 	var victory_scene: PackedScene = preload("res://victory_menu.tscn")
 	var victory_menu = victory_scene.instantiate()
 	add_child(victory_menu)
