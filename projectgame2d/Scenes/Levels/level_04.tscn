@@ -331,6 +331,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Score" type="Control" parent="UserInterface/GameUI"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -361,3 +362,32 @@ theme_override_fonts/font = ExtResource("4_ecyoo")
 theme_override_font_sizes/font_size = 32
 text = "x 3"
 metadata/_edit_use_anchors_ = true
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 42.0
+offset_right = 311.0
+offset_bottom = 69.0
+
+[node name="BossHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
+visible = false
+layout_mode = 0
+offset_left = 384.0
+offset_top = 40.0
+offset_right = 459.0
+offset_bottom = 67.0
+
+[node name="KillLabel" type="Label" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 497.0
+offset_top = 42.0
+offset_right = 537.0
+offset_bottom = 65.0
+
+[node name="DeathLabel" type="Label" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 46.0
+offset_right = 82.0
+offset_bottom = 69.0

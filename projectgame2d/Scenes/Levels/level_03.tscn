@@ -339,6 +339,7 @@ script = ExtResource("9_4kuxc")
 
 [node name="Score" type="Control" parent="UserInterface/GameUI"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -366,6 +367,35 @@ theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("7_0yyqy")
 theme_override_font_sizes/font_size = 32
 text = "x 3"
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 202.0
+offset_top = 43.0
+offset_right = 277.0
+offset_bottom = 70.0
+
+[node name="BossHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
+visible = false
+layout_mode = 0
+offset_left = 384.0
+offset_top = 40.0
+offset_right = 459.0
+offset_bottom = 67.0
+
+[node name="KillLabel" type="Label" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 341.0
+offset_top = 45.0
+offset_right = 381.0
+offset_bottom = 68.0
+
+[node name="DeathLabel" type="Label" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 46.0
+offset_right = 82.0
+offset_bottom = 69.0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 

@@ -354,6 +354,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Score" type="Control" parent="UserInterface/GameUI"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -384,6 +385,35 @@ theme_override_fonts/font = ExtResource("4_ofov5")
 theme_override_font_sizes/font_size = 32
 text = "x 3"
 metadata/_edit_use_anchors_ = true
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 223.0
+offset_top = 349.0
+offset_right = 298.0
+offset_bottom = 376.0
+
+[node name="BossHealthBar" type="ProgressBar" parent="UserInterface/GameUI"]
+visible = false
+layout_mode = 0
+offset_left = 358.0
+offset_top = 348.0
+offset_right = 433.0
+offset_bottom = 375.0
+
+[node name="KillLabel" type="Label" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 479.0
+offset_top = 351.0
+offset_right = 519.0
+offset_bottom = 374.0
+
+[node name="DeathLabel" type="Label" parent="UserInterface/GameUI"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 356.0
+offset_right = 129.0
+offset_bottom = 379.0
 
 [node name="BossTruck" parent="." instance=ExtResource("9_vhd1q")]
 position = Vector2(1588, 498)

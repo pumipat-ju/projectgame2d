@@ -106,7 +106,7 @@ func take_damage(amount: int):
 	print("Enemy HP:", health)
 	flash_red()
 	if health <= 0:
-		queue_free()
+		die()
 
 func flash_red():
 	anim.modulate = Color(1, 0, 0)
@@ -119,3 +119,7 @@ func reset_to_spawn():
 	state = "idle"
 	target_pos = spawn_position
 	anim.play("Idle")
+	
+func die():
+	GameManager.add_kill()
+	queue_free()

@@ -26,6 +26,7 @@ var state = BossState.PHASE1
 var health: int
 var walk_timer: float = 0.0
 var dash_in_progress: bool = false
+var boss_health_bar_shown: bool = false 
 
 # -------- REFERENCES ---------
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -154,14 +155,25 @@ func spawn_projectile():
 
 # -------- DAMAGE ---------
 func take_damage(amount: int):
+	# แสดง UI เลือดบอสครั้งแรก
+	if not boss_health_bar_shown:
+		var ui = get_tree().get_root().get_node_or_null("UserInterface/GameUI")
+		if ui and ui.has_node("BossHealthBar"):
+			ui.get_node("BossHealthBar").visible = true
+		boss_health_bar_shown = true
+
+	# ลด HP
 	health -= amount
+	GameManager.boss_health = health  # อัปเดต UI
 	flash_red()
 	print("Boss HP:", health)
+
 	if health <= 0:
 		if state == BossState.PHASE1:
 			phase_transition()
 		else:
 			queue_free()
+
 
 func flash_red():
 	anim.modulate = Color(1, 0, 0)

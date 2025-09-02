@@ -80,7 +80,7 @@ func take_damage(amount: int):
 	print("Enemy HP:", health)
 	flash_red()
 	if health <= 0:
-		queue_free()  # มอนตาย ลบออก
+		die()  # มอนตาย ลบออก
 
 func flash_red():
 	anim.modulate = Color(1, 0, 0)  # สีแดง
@@ -91,3 +91,7 @@ func reset_to_spawn():
 	global_position = spawn_position
 	velocity = Vector2.ZERO
 	anim.play("Idle")
+
+func die():
+	GameManager.add_kill()
+	queue_free()

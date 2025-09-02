@@ -238,8 +238,9 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO):
 	if is_dead:
 		return
 	health -= amount
-	print("Player HP:", health)
+	GameManager.player_health = health   # <<<<< อัปเดต UI ผ่าน GameManager
 
+	print("Player HP:", health)
 	flash_red()
 
 	if knockback != Vector2.ZERO:
@@ -264,7 +265,8 @@ func die():
 	if is_dead:
 		return
 	is_dead = true
-
+	
+	GameManager.add_player_death()
 	# หยุดเสียงเดินทันที
 	_stop_walk_sfx()
 
@@ -300,6 +302,11 @@ func death_tween(spawn_position: Vector2):
 func respawn_tween():
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.15)
+
+	# Reset HP หลังเกิดใหม่
+	health = max_health
+	GameManager.player_health = health
+
 
 func jump_tween():
 	var tween = create_tween()
