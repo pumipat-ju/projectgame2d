@@ -40,10 +40,16 @@ Action(ต่อสู้), Adventure(ผจญภัย)
 
 ## Credits
 
-**Game Template มาจาก** 2D Platformer Demo - Godot Asset Library 
+**Game Template มาจาก** 2D Platformer Demo - Godot Asset Library
+
 **TileMap  มาจาก** 2D Platformer Demo - Godot Asset Library, https://itch.io, https://opengameart.org
+
 **Character มาจาก** https://www.piskelapp.com/
+
 **Fonts มาจาก** https://itch.io
+
 **Sound Effect มาจาก** https://pixabay.com/
+
 **Sound Background มาจาก** https://pixabay.com และ https://pixabay.com/
+
 **Background มาจาก** https://aistudio.google.com/
